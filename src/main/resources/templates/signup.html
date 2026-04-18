@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>نموذج التسجيل</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f6f8;
+            direction: rtl;
+            padding: 30px;
+            max-width: 700px;
+            margin: auto;
+        }
+        h1 { color: #333; text-align: center; }
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 5em;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        button:enabled {
+            background-color: #28a745;
+            color: white;
+        }
+        .reset-button { background-color: #dc3545; color: white; }
+        .back-button { background-color: #007bff; color: white; margin-right: auto; }
+    </style>
+</head>
+<body>
+<h1>نموذج تسجيل مستخدم جديد</h1>
+
+<form id="signupForm" th:action="@{/signup}" th:object="${user}" method="post" >
+    <div class="success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <label>الاسم الأول:
+        <input type="text" th:field="*{firstName}" required />
+        <div class="error" th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName') or forceErrors}"></div>
+    </label>
+
+    <label>الاسم الثاني:
+        <input type="text" th:field="*{secondName}" required />
+        <div class="error" th:errors="*{secondName}" th:if="${#fields.hasErrors('secondName') or forceErrors}"></div>
+    </label>
+
+    <label>الاسم الثالث:
+        <input type="text" th:field="*{thirdName}" required />
+        <div class="error" th:errors="*{thirdName}" th:if="${#fields.hasErrors('thirdName') or forceErrors}"></div>
+    </label>
+
+    <label>إسم العائلة
+        <input type="text" th:field="*{familyName}" required />
+        <div class="error" th:errors="*{familyName}" th:if="${#fields.hasErrors('familyName') or forceErrors}"></div>
+    </label>
+
+    <label>الجنس:
+        <select th:field="*{sex}" required>
+            <option value="">اختر الجنس</option>
+            <option value="ذكر">ذكر</option>
+            <option value="أنثى">أنثى</option>
+        </select>
+        <div class="error" th:errors="*{sex}" th:if="${#fields.hasErrors('sex') or forceErrors}"></div>
+    </label>
+
+    <label>الجنسية:
+        <input type="text" th:field="*{nationality}" required />
+        <div class="error" th:errors="*{nationality}" th:if="${#fields.hasErrors('nationality') or forceErrors}"></div>
+    </label>
+
+    <label>الرقم القومي:
+        <input type="text" th:field="*{nationalId}" required maxlength="14" pattern="\d{14}" />
+        <div class="error" th:errors="*{nationalId}" th:if="${#fields.hasErrors('nationalId') or forceErrors}"></div>
+    </label>
+
+    <label>تاريخ الميلاد:
+        <input type="date" th:field="*{birthDate}" required />
+        <div class="error" th:errors="*{birthDate}" th:if="${#fields.hasErrors('birthDate') or forceErrors}"></div>
+    </label>
+
+    <label>تليفون أرضي:
+        <input type="text" th:field="*{landline}" pattern="\d*" required />
+        <div class="error" th:errors="*{landline}" th:if="${#fields.hasErrors('landline') or forceErrors}"></div>
+    </label>
+
+    <label>موبايل:
+        <input type="text" th:field="*{mobile}" pattern="\d*" required />
+        <div class="error" th:errors="*{mobile}" th:if="${#fields.hasErrors('mobile') or forceErrors}"></div>
+    </label>
+
+    <label>الدولة:
+        <input type="text" th:field="*{country}" required />
+        <div class="error" th:errors="*{country}" th:if="${#fields.hasErrors('country') or forceErrors}"></div>
+    </label>
+
+    <label>المحافظة:
+        <input type="text" th:field="*{government}" required />
+        <div class="error" th:errors="*{government}" th:if="${#fields.hasErrors('government') or forceErrors}"></div>
+    </label>
+
+    <label>المدينة:
+        <input type="text" th:field="*{city}" required />
+        <div class="error" th:errors="*{city}" th:if="${#fields.hasErrors('city') or forceErrors}"></div>
+    </label>
+
+    <label>العنوان:
+        <input type="text" th:field="*{address}" required />
+        <div class="error" th:errors="*{address}" th:if="${#fields.hasErrors('address') or forceErrors}"></div>
+    </label>
+
+    <label>البريد الإلكتروني:
+        <input type="email" th:field="*{email}" required />
+        <div class="error" th:errors="*{email}" th:if="${#fields.hasErrors('email') or forceErrors}"></div>
+    </label>
+
+    <label>اسم المستخدم:
+        <input type="text" th:field="*{userCode}" id="userCode" required minlength="4" oninput="debouncedCheckUsername(); validateField(this)" />
+        <div class="error">
+            <span id="userCodeSpinner" style="display:none;" class="spinner"></span>
+            <span id="userCodeError"></span>
+        </div>
+        <div class="error" th:errors="*{userCode}" th:if="${#fields.hasErrors('userCode') or forceErrors}"></div>
+    </label>
+
+    <label>كلمة السر:
+        <input type="password" th:field="*{password}" required pattern="(?=.*[a-zA-Z])(?=.*\d).{6,}" oninput="checkUsername(); validateField(this)" />
+        <div class="error" th:errors="*{password}" th:if="${#fields.hasErrors('password') or forceErrors}"></div>
+    </label>
+
+    <div class="buttons">
+        <button type="submit" id="submitBtn" >تسجيل</button>
+        <button type="reset" class="reset-button">مسح</button>
+        <button type="button" class="back-button" onclick="window.location.href='/'">رجوع</button>
+    </div>
+</form>
+
+<script>
+    const form = document.getElementById("signupForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const userCodeInput = document.getElementById("userCode");
+    const userCodeErrorDiv = document.getElementById("userCodeError");
+
+    function validateField(field) {
+        const errorDiv = field.nextElementSibling;
+        if (field.validity.valid) {
+            errorDiv.textContent = "";
+        } else {
+            errorDiv.textContent = field.validationMessage;
+        }
+        toggleSubmit();
+    }
+
+    function toggleSubmit() {}
+
+    function checkUsername() {
+        const username = userCodeInput.value.trim();
+        const spinner = document.getElementById("userCodeSpinner");
+
+        if (username.length >= 4) {
+            spinner.style.display = "inline-block";
+            userCodeErrorDiv.textContent = "";
+            fetch(`/api/check-username?username=${encodeURIComponent(username)}`)
+                .then(res => res.json())
+                .then(data => {
+                    spinner.style.display = "none";
+                    userCodeErrorDiv.textContent = data ? "⚠️ هذا الاسم مستخدم بالفعل" : "";
+                    toggleSubmit();
+                }).catch(() => {
+                    spinner.style.display = "none";
+                    userCodeErrorDiv.textContent = "⚠️ خطأ في التحقق من الاسم";
+                    toggleSubmit();
+                });
+        } else {
+            userCodeErrorDiv.textContent = "";
+            spinner.style.display = "none";
+        }
+    }
+
+    let debounceTimer;
+    function debouncedCheckUsername() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            checkUsername();
+        }, 400);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        [...form.querySelectorAll("input, select")].forEach(el => {
+            el.addEventListener("input", () => validateField(el));
+        });
+        toggleSubmit();
+    });
+</script>
+</body>
+</html>

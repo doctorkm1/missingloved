@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>نموذج بلاغ مشاهدة شخص غائب</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
+    <style>
+        .form-label { font-weight: bold; }
+        .error-msg { color: red; font-size: 0.9em; display: none; }
+        .field-error { background-color: #ffe5e5; }
+        .alert-msg { color: red; font-weight: bold; display: none; text-align: center; margin-top: 10px; }
+    </style>
+</head>
+<body class="bg-light p-4">
+<div class="container">
+    <h2 class="mb-4 text-center">نموذج بلاغ مشاهدة شخص غائب</h2>
+
+    <div th:if="${successMessage}" class="alert alert-success text-center">
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger text-center">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <form class="row g-3 needs-validation" id="sightmisForm" method="post" novalidate th:action="@{/sightmis/create}" th:object="${sightmis}">
+
+        <!-- tracking fields -->
+        <input type="hidden" th:field="*{mseencreatedby}" id="mseencreatedby">
+        <input type="hidden" th:field="*{mseencreatedip}">
+        <input type="hidden" th:field="*{mseencreatedat}">
+
+        <input type="hidden" th:field="*{mseenactivatedby}" id="mseenactivatedby">
+        <input type="hidden" th:field="*{mseenactivatedip}">
+        <input type="hidden" th:field="*{mseenactivatedat}">
+        <input type="hidden" th:field="*{mseenreportedby}" id="mseenreportedby">
+
+        <input type="hidden" th:field="*{mseendeactivatedby}" id="mseendeactivatedby">
+        <input type="hidden" th:field="*{mseendeactivatedip}">
+        <input type="hidden" th:field="*{mseendeactivatedat}">
+
+        <!-- الكود المرجعي للغائب -->
+        <div class="col-md-4">
+            <label class="form-label">الكود المرجعي للغائب</label>
+            <input class="form-control required" id="missingcode" th:field="*{missingcode}" type="text" required/>
+            <div class="text-danger small" id="error-missingcode" style="display:none;">⚠️ الكود غير موجود في سجلات الغائبين</div>
+        </div>
+
+        <!-- مكان المشاهدة -->
+<!---        <div class="col-12"><h5>مكان المشاهدة</h5></div>  -->
+        <div class="row">
+            <!-- الدولة -->
+            <div class="col-md-2">
+                <label class="form-label" style="font-size: 0.85rem;">مكان المشاهدة.. الدولة</label>
+                <input class="form-control required" th:field="*{mseencountry}" type="text" value="مصر" required/>
+            </div>
+
+            <!-- المحافظة -->
+            <div class="col-md-2">
+                <label class="form-label">المحافظة</label>
+                <select id="sightGov" class="form-select required" required>
+                    <option value="">اختر المحافظة...</option>
+                </select>
+            </div>
+
+            <!-- المدينة -->
+            <div class="col-md-2">
+                <label class="form-label">المدينة</label>
+                <select id="sightCity" class="form-select required" required>
+                    <option value="">اختر المدينة...</option>
+                </select>
+            </div>
+
+            <!-- المركز/الحي -->
+            <div class="col-md-2">
+                <label class="form-label">المركز/الحى</label>
+                <select id="sightDistrict" class="form-select required" required>
+                    <option value="">اختر الحي...</option>
+                </select>
+            </div>
+
+            <!-- العنوان -->
+            <div class="col-md-4">
+                <label class="form-label">العنوان</label>
+                <input class="form-control required" th:field="*{mseenaddress}" type="text" required/>
+            </div>
+        </div>
+
+        <!-- Hidden fields to store readable values for submission -->
+        <input type="hidden" th:field="*{mseengov}" id="sightGovName">
+        <input type="hidden" th:field="*{mseencity}" id="sightCityName">
+        <input type="hidden" th:field="*{mseendistrict}" id="sightDistrictName">
+        <!-- تفاصيل المشاهدة -->
+        <div class="col-md-4">
+            <label class="form-label">تاريخ المشاهدة</label>
+            <input class="form-control required" th:field="*{mseendate}" type="date" required/>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">وقت المشاهدة</label>
+            <input class="form-control required" th:field="*{mseentime}" id="mseentime" type="time" required/>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">تاريخ البلاغ</label>
+            <input class="form-control required" th:field="*{reportdate}" type="date" required/>
+        </div>
+
+        <!-- إخفاء مصدر المعلومة -->
+        <div class="col-md-6">
+            <label class="form-label">إخفاء مصدر المعلومة</label>
+            <select class="form-select required" th:field="*{msightrepagree}" required>
+                <option value="">اختر</option>
+                <option th:value="true">نعم</option>
+                <option th:value="false">لا</option>
+            </select>
+        </div>
+
+        <!-- الأزرار -->
+        <div class="col-12 d-flex justify-content-between mt-4">
+            <div>
+                <button type="submit" id="submitBtn" class="btn btn-primary me-3 px-4" disabled>إرسال البلاغ</button>
+                <button type="button" id="clearBtn" class="btn btn-secondary px-4">مسح</button>
+            </div>
+            <small style="font-size: 11px; color: black;">sightmis.html</small>
+            <a href="/#sightmisreport" class="btn btn-outline-dark px-4">رجوع</a>
+        </div>
+
+        <div class="col-12">
+            <div id="formAlert" class="alert-msg"></div>
+        </div>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('sightmisForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const alertBox = document.getElementById('formAlert');
+    const requiredFields = form.querySelectorAll('.required');
+
+    async function checkMissingCode(code) {
+        const res = await fetch('/sightmis/check-casecode/' + code); // adjust path if needed
+        return res.ok ? await res.json() : false;
+    }
+
+    async function validateForm() {
+        let valid = true;
+        for (const field of requiredFields) {
+            const id = field.getAttribute('id');
+            if (id === 'missingcode') {
+                const exists = await checkMissingCode(field.value.trim());
+                if (!exists) {
+                    field.classList.add('field-error');
+                    document.getElementById('error-missingcode').style.display = 'block';
+                    valid = false;
+                } else {
+                    field.classList.remove('field-error');
+                    document.getElementById('error-missingcode').style.display = 'none';
+                }
+            } else if (!field.value.trim()) {
+                field.classList.add('field-error');
+                valid = false;
+            } else {
+                field.classList.remove('field-error');
+            }
+        }
+        submitBtn.disabled = !valid;
+    }
+
+    requiredFields.forEach(field => {
+        field.addEventListener('input', validateForm);
+    });
+
+    form.addEventListener('submit', async function (e) {
+        await validateForm();
+        if (submitBtn.disabled) {
+            e.preventDefault();
+            alertBox.textContent = "يرجى استكمال الحقول المطلوبة بشكل صحيح";
+            alertBox.style.display = 'block';
+        }
+    });
+
+    clearBtn.addEventListener('click', () => {
+        form.reset();
+        alertBox.style.display = 'none';
+        requiredFields.forEach(f => f.classList.remove('field-error'));
+        requiredFields[0].focus();
+        submitBtn.disabled = true;
+    });
+
+    window.addEventListener('load', () => {
+        validateForm();
+        const urlParams = new URLSearchParams(window.location.search);
+        const passedUserCode = urlParams.get("userCode");
+        const loggedUserCode = sessionStorage.getItem("userCode");
+
+        if (passedUserCode) {
+            document.getElementById("mseenreportedby").value = passedUserCode;
+        }
+
+        if (loggedUserCode) {
+            document.getElementById("mseencreatedby").value = loggedUserCode;
+        } else if (passedUserCode) {
+            document.getElementById("mseencreatedby").value = passedUserCode;
+        }
+    });
+    document.getElementById("govSelect").addEventListener("change", function () {
+    const govCode = this.value;
+    fetch("/api/location/cities/" + govCode)
+        .then(response => response.json())
+        .then(data => {
+            const citySelect = document.getElementById("citySelect");
+            citySelect.innerHTML = '<option value="">اختر</option>';
+            data.forEach(city => {
+                const option = document.createElement("option");
+                option.value = city.code;
+                option.textContent = city.name;
+                citySelect.appendChild(option);
+            });
+            document.getElementById("districtSelect").innerHTML = '<option value="">اختر المدينة أولاً</option>';
+        });
+});
+
+document.getElementById("citySelect").addEventListener("change", function () {
+    const cityCode = this.value;
+    fetch("/api/location/districts/" + cityCode)
+        .then(response => response.json())
+        .then(data => {
+            const districtSelect = document.getElementById("districtSelect");
+            districtSelect.innerHTML = '<option value="">اختر</option>';
+            data.forEach(dist => {
+                const option = document.createElement("option");
+                option.value = dist.code;
+                option.textContent = dist.name;
+                districtSelect.appendChild(option);
+            });
+        });
+});
+
+</script>
+
+<script>
+    async function loadGovernments(selectId) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">تحميل المحافظات...</option>';
+        try {
+            const res = await fetch('/api/locations/governments');
+            const data = await res.json();
+            select.innerHTML = '<option value="">اختر المحافظة...</option>';
+            data.forEach(loc => {
+                const opt = document.createElement("option");
+                opt.value = loc.gov;
+                opt.textContent = loc.description.trim();
+                select.appendChild(opt);
+            });
+        } catch {
+            select.innerHTML = '<option value="">تعذر تحميل المحافظات</option>';
+        }
+    }
+
+    async function loadCities(govCode, selectId) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">تحميل المدن...</option>';
+        try {
+            const res = await fetch(`/api/locations/cities/${govCode}`);
+            const data = await res.json();
+            select.innerHTML = '<option value="">اختر المدينة...</option>';
+            data.forEach(loc => {
+                const opt = document.createElement("option");
+                opt.value = loc.pol;
+                opt.textContent = loc.description.trim();
+                select.appendChild(opt);
+            });
+        } catch {
+            select.innerHTML = '<option value="">تعذر تحميل المدن</option>';
+        }
+    }
+
+    async function loadDistricts(govCode, cityCode, selectId) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">تحميل الأحياء...</option>';
+        try {
+            const res = await fetch(`/api/locations/zon1/${govCode}${cityCode}`);
+            const data = await res.json();
+            select.innerHTML = '<option value="">اختر الحي...</option>';
+            data.forEach(loc => {
+                const opt = document.createElement("option");
+                opt.value = loc.zon1;
+                opt.textContent = loc.description.trim();
+                select.appendChild(opt);
+            });
+        } catch {
+            select.innerHTML = '<option value="">تعذر تحميل الأحياء</option>';
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadGovernments("sightGov");
+
+        document.getElementById("sightGov").addEventListener("change", e => {
+            const gov = e.target.value;
+            loadCities(gov, "sightCity");
+            document.getElementById("sightDistrict").innerHTML = '<option value="">اختر المدينة أولاً</option>';
+        });
+
+        document.getElementById("sightCity").addEventListener("change", e => {
+            const gov = document.getElementById("sightGov").value;
+            const city = e.target.value;
+            loadDistricts(gov, city, "sightDistrict");
+        });
+    });
+
+    document.getElementById("sightmisForm").addEventListener("submit", () => {
+        const setHidden = (dropdownId, hiddenId) => {
+            const sel = document.getElementById(dropdownId);
+            if (sel && sel.selectedIndex > 0) {
+                document.getElementById(hiddenId).value = sel.options[sel.selectedIndex].textContent.trim();
+            }
+            if (sel) sel.removeAttribute("name");
+        };
+        setHidden("sightGov", "sightGovName");
+        setHidden("sightCity", "sightCityName");
+        setHidden("sightDistrict", "sightDistrictName");
+    });
+</script>
+
+</body>
+</html>

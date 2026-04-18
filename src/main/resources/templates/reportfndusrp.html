@@ -1,0 +1,412 @@
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>نموذج التسجيل</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
+
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                background: #f4f6f8;
+                direction: rtl;
+                padding: 30px;
+                max-width: 700px;
+                margin: auto;
+            }
+            h1 { color: #333; text-align: center; }
+            form {
+                background: white;
+                padding: 25px;
+                border-radius: 10px;
+                box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            }
+            label {
+                display: block;
+                margin-top: 12px;
+                font-weight: bold;
+            }
+            input, select {
+                width: 100%;
+                padding: 8px;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            .error {
+                color: red;
+                font-weight: bold;
+                font-size: 0.9em;
+            }
+            .success {
+                color: green;
+                font-weight: bold;
+                text-align: center;
+                margin-top: 20px;
+            }
+            .buttons {
+                margin-top: 20px;
+                display: flex;
+                justify-content: flex-start;
+                gap: 5em;
+            }
+            button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+            button:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+            button:enabled {
+                background-color: #28a745;
+                color: white;
+            }
+            .reset-button { background-color: #dc3545; color: white; }
+            .back-button { background-color: #007bff; color: white; margin-right: auto; }
+            .success-buttons {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .form-label { font-weight: bold; }
+            .error-msg { color: red; font-size: 0.9em; display: none; }
+            .field-error { background-color: #ffe5e5; }
+            .alert-msg { color: red; font-weight: bold; display: none; text-align: center; margin-top: 10px; }
+
+        </style>
+        <style>
+            .table-container {
+              max-height: 500px;
+              overflow-y: auto;
+              margin-bottom: 80px;
+            }
+
+            thead th {
+              position: sticky;
+              top: 0;
+              background: #343a40;
+              color: white;
+              z-index: 2;
+            }
+
+            .pagination-footer {
+              position: fixed;
+              bottom: 0;
+              width: 100%;
+              background: #f8f9fa;
+              padding: 10px 30px;
+              border-top: 1px solid #ccc;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+        </style>
+
+    </head>
+    <body>
+    <h1>تسجيل بيانات صاحب البلاغ</h1>
+
+    <form id="reportfndusrpForm" th:action="@{/reportfndusrp}" th:object="${user}" method="post" novalidate>
+        <div class="success" th:if="${successMessage}">
+            <span th:text="${successMessage}">تم التسجيل بنجاح , إضغط إستمرار  لتسجيل بيانات المعثور عليه</span>
+            <button type="button" style="margin-right: 2em;" onclick="continueToReport()">إستمرار</button>
+        </div>
+
+        <div class="error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label">الاسم الأول</label>
+                <input class="form-control required" id="firstName" required th:field="*{firstName}" type="text"/>
+                <div class="text-danger small" id="error-firstName" style="display:none;">الإسم مطلوب</div>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">الاسم الثاني</label>
+                <input class="form-control required" id="secondName" required th:field="*{secondName}" type="text"/>
+                <div class="text-danger small" id="error-secondName" style="display:none;">الإسم مطلوب</div>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">الاسم الثالث</label>
+                <input class="form-control required" id="thirdName" required th:field="*{thirdName}" type="text"/>
+                <div class="text-danger small" id="error-thirdName" style="display:none;">الإسم مطلوب</div>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">الاسم الأخير:</label>
+                <input class="form-control required" id="familyName" required th:field="*{familyName}" type="text"/>
+                <div class="text-danger small" id="error-familyName" style="display:none;">الإسم مطلوب</div>
+            </div>
+        </div>
+
+        <!---------------------------------------        --------------------->
+
+        <label class="form-label">الجنس</label>
+        <select class="form-select required" required th:field="*{sex}">
+            <option value="">اختر</option>
+            <option value="ذكر">ذكر</option>
+            <option value="أنثى">أنثى</option>
+        </select>
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">الجنسية</label>
+        <input class="form-control required" id="nationality" required th:field="*{nationality}" type="text"/>
+        <div class="text-danger small" id="error-nationality" style="display:none;">البيان مطلوب</div>
+        <!--    </div>  --->
+
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">الرقم القومي</label>
+        <input class="form-control required" id="nationalId" pattern="\d{14}" required th:field="*{nationalId}" type="text"/>
+        <div class="text-danger small" id="error-nationalId" style="display:none;">الرقم القومي يجب أن يتكون من 14 رقمًا</div>
+        <!--    </div>  --->
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">تاريخ الميلاد</label>
+        <input class="form-control required" id="birthDate" th:field="*{birthDate}" type="date" style="width: 180px; color: #000; font-weight: 500;" />
+        <div class="text-danger small" id="error-birthDate" style="display:none;">تاريخ الميلاد مطلوب</div>
+        <!--    </div>  --->
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">تليفون أرضي:</label>
+        <input type="tel" dir="rtl" style="text-align: right;" class="form-control required" id="landline" th:field="*{landline}" pattern="\d+" title="أرقام فقط" maxlength="15" required>
+        <!---        <input type="tel" dir="rtl" class="form-control required" id="landline" th:field="*{landline}" pattern="\d+" title="أرقام فقط" maxlength="15" required> --->
+        <div class="text-danger small" id="error-landline" style="display:none;"> رقم التليفون الأرضى يجب أن يتكون من أرقام فقط بحد أقصى 15 رقم</div>
+        <!--    </div>  --->
+
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">موبايل:</label>
+        <input type="tel" dir="rtl" style="text-align: right;" class="form-control required" id="mobile" th:field="*{mobile}" pattern="\d+" title="أرقام فقط" maxlength="15" required>
+        <!--        <input type="tel" dir="rtl" class="form-control required" id="mobile" th:field="*{mobile}" pattern="\d+" title="أرقام فقط" maxlength="15" required>-->
+        <div class="text-danger small" id="error-mobile" style="display:none;">رقم الموبايل يجب أن يتكون من أرقام فقط بحد أقصى 15 رقم</div>
+        <!--    </div>  --->
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">الدولة:</label>
+        <input class="form-control required" id="country" required th:field="*{country}" type="text" value="مصر"/>
+        <div class="text-danger small" id="error-country" style="display:none;">البيان مطلوب</div>
+        <!--    </div>  --->
+
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">المحافظة:</label>
+        <input class="form-control required" id="government" required th:field="*{government}" type="text"/>
+        <div class="text-danger small" id="error-government" style="display:none;">البيان مطلوب</div>
+        <!--    </div>  --->
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">المدينة:</label>
+        <input class="form-control required" id="city" required th:field="*{city}" type="text"/>
+        <div class="text-danger small" id="error-city" style="display:none;">البيان مطلوب</div>
+        <!--    </div>  --->
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">العنوان</label>
+        <input class="form-control required" id="address" required th:field="*{address}" type="text"/>
+        <div class="text-danger small" id="error-address" style="display:none;">البيان مطلوب</div>
+        <!--    </div>  --->
+
+        <!--    <div class="col-md-4">  --->
+        <label class="form-label">البريد الإلكتروني:</label>
+        <input class="form-control required" id="email" required th:field="*{email}" type="text"/>
+        <div class="text-danger small" id="error-email" style="display:none;">البريد الإلكتروني غير صحيح</div>
+        <!--    </div>  --->
+
+
+        <input type="hidden" id="userCode" th:field="*{userCode}" />
+        <input type="hidden" id="password" th:field="*{password}" />
+
+        <div class="buttons">
+            <button type="submit" id="submitBtn" disabled>تسجيل</button>
+            <div class="buttons" style="display: flex; justify-content: space-between; align-items: center;">
+                <button type="reset" class="reset-button">مسح</button>
+
+                <small style="font-size: 11px; color: gray;">reportmlcusrp.html</small>
+
+                <button type="button" class="back-button" onclick="location.href='/'">رجوع</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        const form = document.getElementById("reportfndusrpForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const requiredFields = form.querySelectorAll('.required');
+
+    function validateForm() {
+      let valid = true;
+      const requiredFields = form.querySelectorAll(".required");
+
+      requiredFields.forEach(field => {
+        const id = field.getAttribute("id");
+
+        if (id === 'firstName' || id === 'secondName' || id === 'thirdName' || id === 'familyName') {
+          if (field.value.trim().length < 2) {
+            field.classList.add('field-error');
+            document.getElementById('error-' + id).style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById('error-' + id).style.display = 'none';
+          }
+        }
+
+        else if (id === 'nationalId') {
+          if (!/^\d{14}$/.test(field.value.trim())) {
+            field.classList.add('field-error');
+            document.getElementById('error-nationalId').style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById('error-nationalId').style.display = 'none';
+          }
+        }
+
+        else if (id === 'nationality') {
+          if (field.value.trim().length < 2) {
+            field.classList.add('field-error');
+            document.getElementById('error-nationality').style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById('error-nationality').style.display = 'none';
+          }
+        }
+
+        else if (id === 'birthDate') {
+          if (!field.value.trim()) {
+            field.classList.add('field-error');
+            document.getElementById('error-birthDate').style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById('error-birthDate').style.display = 'none';
+          }
+        }
+
+        else if (id === 'landline') {
+          if (!/^(\+)?\d{4,14}$/.test(field.value.trim())) {
+            field.classList.add('field-error');
+            document.getElementById('error-landline').style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById('error-landline').style.display = 'none';
+          }
+        }
+
+        else if (id === 'mobile') {
+          if (!/^(\+)?\d{4,14}$/.test(field.value.trim())) {
+            field.classList.add('field-error');
+            document.getElementById('error-mobile').style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById('error-mobile').style.display = 'none';
+          }
+        }
+
+        else if (id === 'email') {
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim())) {
+            field.classList.add('field-error');
+            document.getElementById('error-email').style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById('error-email').style.display = 'none';
+          }
+        }
+    else if (id === 'country' || id === 'government' || id === 'city' || id === 'address') {
+      if (!field.value.trim()) {
+        field.classList.add('field-error');
+        document.getElementById('error-' + id).style.display = 'block';
+        valid = false;
+      } else {
+        field.classList.remove('field-error');
+        document.getElementById('error-' + id).style.display = 'none';
+      }
+    }
+
+
+        else {
+          if (!field.value.trim()) {
+            field.classList.add('field-error');
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+          }
+        }
+      });
+
+      submitBtn.disabled = !valid;
+    }
+
+        requiredFields.forEach(field => {
+          field.addEventListener('input', validateForm);
+        });
+
+
+        function validateField(field) {
+            const errorDiv = field.nextElementSibling;
+            if (errorDiv && errorDiv.classList.contains("error")) {
+                errorDiv.textContent = field.validity.valid ? "" : field.validationMessage;
+            }
+            toggleSubmit();
+        }
+
+        function toggleSubmit() {
+            const allValid = [...form.elements].every(el => el.checkValidity?.() ?? true);
+            submitBtn.disabled = !allValid;
+        }
+
+        function generateUserCode() {
+            const now = new Date();
+            const hhmm = now.getHours().toString().padStart(2, '0') +
+                         now.getMinutes().toString().padStart(2, '0');
+            const randomDigits = Math.floor(10000 + Math.random() * 90000);
+            return "usr" + hhmm + randomDigits;
+        }
+
+        function prepareAndSubmitForm(event) {
+            event.preventDefault();
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            const generatedUserCode = generateUserCode();
+            const passwordValue = "kmkmkmkmkm";
+
+            document.getElementById("userCode").value = generatedUserCode;
+            document.getElementById("password").value = passwordValue;
+
+            sessionStorage.setItem("generatedUserCode", generatedUserCode);
+            sessionStorage.setItem("generatedPassword", passwordValue);
+
+            form.submit();
+        }
+
+        function continueToReport() {
+            const userCode = sessionStorage.getItem("generatedUserCode");
+            if (userCode) {
+                location.href = "/found-entry?userCode=" + encodeURIComponent(userCode);
+            } else {
+                alert("لم يتم توليد كود المستخدم بعد.");
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            [...form.querySelectorAll("input, select")].forEach(el => {
+                el.addEventListener("input", () => validateField(el));
+            });
+            toggleSubmit();
+               validateForm(); // ✅ This line ensures red background and errors appear on page load
+            submitBtn.addEventListener("click", prepareAndSubmitForm);
+        });
+    </script>
+    </body>
+    </html>

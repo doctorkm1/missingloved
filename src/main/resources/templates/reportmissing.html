@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بلاغ عن مفقود</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <style>
+        body { background: #f9f9f9; padding: 20px; font-family: 'Arial', sans-serif; }
+        h2 { color: #b30000; margin-bottom: 20px; text-align: center; }
+        .form-section { display: none; }
+        .form-section.active { display: block; }
+        .form-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+        .form-buttons .right { display: flex; gap: 10px; }
+        .form-buttons .left { display: flex; gap: 10px; }
+        label { font-weight: bold; margin-top: 10px; display: block; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+<h2>نموذج بلاغ عن مفقود reportmissing.html</h2>
+<form id="reportForm" enctype="multipart/form-data" method="post" action="/report-missing/submit">
+
+    <!-- صفحة 1: بيانات المُبلّغ -->
+    <div class="form-section active" id="reporterSection">
+        <h4>البيانات الشخصية للمبلغ</h4>
+
+        <label>الاسم الأول:<input type="text" name="rFirstName" required minlength="2"></label>
+        <label>الاسم الثاني:<input type="text" name="rSecondName" required minlength="2"></label>
+        <label>الاسم الأخير:<input type="text" name="rFamilyName" required minlength="2"></label>
+        <label>الجنس:
+            <select name="rGender" required>
+                <option value="">اختر</option>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+        </label>
+        <label>الجنسية:<input type="text" name="rNationality" required></label>
+        <label>الرقم القومي:<input type="text" name="rNationalId" required pattern="\d{14}" maxlength="14"></label>
+        <label>تاريخ الميلاد:<input type="date" name="rBirthDate" required></label>
+        <label>تليفون أرضي:<input type="text" name="rLandline" pattern="\d*" required></label>
+        <label>موبايل:<input type="text" name="rMobile" pattern="\d*" required></label>
+
+        <h5 class="mt-4">مكان الإقامة</h5>
+        <label>الدولة:<input type="text" name="rCountry" required></label>
+        <label>المحافظة:<input type="text" name="rGovernment" required></label>
+        <label>المدينة:<input type="text" name="rCity" required></label>
+        <label>العنوان:<input type="text" name="rAddress" required></label>
+        <label>البريد الإلكتروني:<input type="email" name="rEmail" required></label>
+
+        <div class="form-buttons">
+            <div class="right">
+                <button type="button" id="nextBtn" class="btn btn-primary" onclick="goToStep(2)">الصفحة التالية</button>
+<!---                <button type="button" id="nextBtn" class="btn btn-primary" disabled onclick="goToStep(2)">الصفحة التالية</button>  --->
+                <button type="reset" class="btn btn-secondary">مسح</button>
+            </div>
+            <div class="left">
+                <a href="/" class="btn btn-danger">خروج</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة 2: بيانات المفقود -->
+    <div class="form-section" id="missingSection">
+        <h4>البيانات الخاصة بالمفقود</h4>
+
+        <label>الاسم الأول:<input type="text" name="mFirstName" required minlength="2"></label>
+        <label>الاسم الثاني:<input type="text" name="mSecondName" required minlength="2"></label>
+        <label>الاسم الثالث:<input type="text" name="mFamilyName" required minlength="2"></label>
+        <label>الجنس:
+            <select name="mGender" required>
+                <option value="">اختر</option>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+        </label>
+        <label>الرقم القومي:<input type="text" name="mNationalId" pattern="\d{14}"></label>
+        <label>تاريخ الميلاد:<input type="date" name="mDob" required></label>
+
+        <h5 class="mt-4">مكان الإقامة</h5>
+        <label>الدولة:<input type="text" name="mGovernorate" required></label>
+        <label>المحافظة:<input type="text" name="mCity" required></label>
+        <label>المدينة:<input type="text" name="mAddress" required></label>
+        <label>العنوان:<input type="text" name="mAddressDetail" required></label>
+
+        <h5 class="mt-4">مكان الفقد</h5>
+        <label>الدولة:<input type="text" name="lastSeenCountry" required></label>
+        <label>المحافظة:<input type="text" name="lastSeenGovernorate" required></label>
+        <label>المدينة:<input type="text" name="lastSeenCity" required></label>
+        <label>العنوان:<input type="text" name="lastSeenLocation" required></label>
+
+        <label>تليفون أرضي:<input type="text" name="mLandline" pattern="\d*" required></label>
+        <label>موبايل:<input type="text" name="mMobile" pattern="\d*" required></label>
+        <label>صلة المُبلّغ بالمفقود:
+            <select name="reporterRelation" required>
+                <option value="">اختر</option>
+                <option value="الوالد">الوالد</option>
+                <option value="الأم">الأم</option>
+                <option value="الأخ">الأخ</option>
+                <option value="الأخت">الأخت</option>
+                <option value="الزوج">الزوج</option>
+                <option value="الزوجة">الزوجة</option>
+                <option value="قريب">قريب</option>
+                <option value="صديق">صديق</option>
+                <option value="جار">جار</option>
+            </select>
+        </label>
+        <label>تاريخ الفقد:<input type="date" name="lastSeenDate" required></label>
+        <label>العمر عند الفقد:<input type="number" name="age" required></label>
+        <label>الحالة الصحية:
+            <select name="healthStatus" required>
+                <option value="">اختر</option>
+                <option value="جيدة">جيدة</option>
+                <option value="معاق">معاق</option>
+                <option value="معاق ذهنيا">معاق ذهنيا</option>
+                <option value="توحد">توحد</option>
+                <option value="مريض نفسى">مريض نفسى</option>
+                <option value="سكر">سكر</option>
+                <option value="ضغط">ضغط</option>
+            </select>
+        </label>
+        <label>نوع مستند رسمي:<input type="text" name="documentType"></label>
+        <label>رقم المستند:<input type="text" name="documentNumber"></label>
+        <label>صادر من:<input type="text" name="documentIssuedBy"></label>
+        <label>تاريخ المستند:<input type="date" name="documentDate"></label>
+        <label>صورة الشخص:<input type="file" name="photo"></label>
+        <label>صورة المستند:<input type="file" name="document" required></label>
+
+        <div class="form-buttons">
+            <div class="right">
+                <button type="submit" id="submitBtn" class="btn btn-success" disabled>تسجيل</button>
+                <button type="reset" class="btn btn-secondary">مسح</button>
+            </div>
+            <div class="left">
+                <a href="/missingreport" class="btn btn-danger">خروج</a>
+                <button type="button" class="btn btn-warning" onclick="goToStep(1)">الصفحة السابقة</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function goToStep(step) {
+        document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
+        if (step === 1) document.getElementById('reporterSection').classList.add('active');
+        else document.getElementById('missingSection').classList.add('active');
+    }
+
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function validateSection(sectionId, button) {
+        const section = document.getElementById(sectionId);
+        const inputs = section.querySelectorAll('input, select');
+        let allValid = true;
+        inputs.forEach(input => {
+            if (!input.checkValidity()) allValid = false;
+        });
+        button.disabled = !allValid;
+    }
+
+    document.querySelectorAll('#reporterSection input, #reporterSection select').forEach(input => {
+        input.addEventListener('input', () => validateSection('reporterSection', nextBtn));
+    });
+
+    document.querySelectorAll('#missingSection input, #missingSection select').forEach(input => {
+        input.addEventListener('input', () => validateSection('missingSection', submitBtn));
+    });
+</script>
+
+</body>
+</html>

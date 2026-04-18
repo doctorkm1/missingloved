@@ -1,0 +1,74 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- File: src/main/resources/templates/fragments/case-row.html -->
+<tr th:id="'row-0-' + ${m.id}">
+    <td>1</td>
+    <td th:text="${m.firstName + ' ' + m.secondName + ' ' + m.familyName}"></td>
+    <td th:text="${m.gender}"></td>
+    <td th:text="${m.nationalId}"></td>
+    <td th:text="${m.dob}"></td>
+    <td th:text="${m.age}"></td>
+    <td th:text="${m.healthStatus}"></td>
+    <td th:text="${m.country}"></td>
+    <td th:text="${m.government}"></td>
+    <td th:text="${m.city}"></td>
+    <td th:text="${m.address}"></td>
+    <td th:text="${m.landline}"></td>
+    <td th:text="${m.mobile}"></td>
+    <td th:text="${m.reporterRelation}"></td>
+    <td th:text="${m.documentType}"></td>
+    <td th:text="${m.documentNumber}"></td>
+    <td th:text="${m.documentIssuedBy}"></td>
+    <td th:text="${m.documentDate}"></td>
+    <td th:text="${m.lastSeenCountry}"></td>
+    <td th:text="${m.lastSeenGovernorate}"></td>
+    <td th:text="${m.lastSeenCity}"></td>
+    <td th:text="${m.lastSeenLocation}"></td>
+    <td th:text="${m.lastSeenDate}"></td>
+    <td th:text="${m.photoDate != null ? m.photoDate : '---'}"></td>
+    <td>
+        <a class="btn btn-outline-primary btn-sm" target="_blank"
+           th:href="@{'/' + ${m.photoUrl}}" th:if="${m.photoUrl != null}">عرض</a>
+        <span th:if="${m.photoUrl == null}">---</span>
+    </td>
+    <td>
+        <a class="btn btn-outline-secondary btn-sm" target="_blank"
+           th:href="@{'/' + ${m.officialDocPath}}" th:if="${m.officialDocPath != null}">عرض</a>
+        <span th:if="${m.officialDocPath == null}">---</span>
+    </td>
+    <td th:text="${m.caseCode}"></td>
+    <td>
+        <span th:classappend="${m.activated ? 'text-success' : 'text-warning'}"
+              th:text="${m.activated ? 'مفعل' : 'في الانتظار'}"></span>
+    </td>
+    <td th:text="${m.reporterCode != null ? m.reporterCode : '---'}"></td>
+    <td th:text="${m.createdBy != null ? m.createdBy : '---'}"></td>
+    <td th:text="${m.ipAddress}"></td>
+    <td th:text="${m.createdAt != null ? #temporals.format(m.createdAt, 'yyyy-MM-dd HH:mm') : '---'}"></td>
+    <td th:text="${m.activatedBy != null ? m.activatedBy : '---'}"></td>
+    <td th:text="${m.activatedIp != null ? m.activatedIp : '---'}"></td>
+    <td th:text="${m.activatedAt != null ? #temporals.format(m.activatedAt, 'yyyy-MM-dd HH:mm') : '---'}"></td>
+    <td th:text="${m.deactivatedBy != null ? m.deactivatedBy : '---'}"></td>
+    <td th:text="${m.deactivatedIp != null ? m.deactivatedIp : '---'}"></td>
+    <td th:text="${m.deactivatedAt != null ? #temporals.format(m.deactivatedAt, 'yyyy-MM-dd HH:mm') : '---'}"></td>
+    <td>
+        <button class="btn btn-sm"
+                th:id="'btn-toggle-0-' + ${m.id}"
+                th:text="${m.activated} ? 'تعطيل' : 'تفعيل'"
+                th:classappend="${m.activated} ? 'btn-warning' : 'btn-success'"
+                th:onclick="${m.activated} ?
+                  'deactivateMissing(' + ${m.id} + ')' :
+                  'activateMissing(' + ${m.id} + ')'">
+        </button>
+        <form method="post" th:action="@{'/case/delete/' + ${m.id}}"
+              onsubmit="return confirm('هل أنت متأكد أنك تريد حذف هذا السجل؟');">
+            <input name="page" type="hidden" value="0"/>
+            <input name="from" type="hidden" value=""/>
+            <input name="to" type="hidden" value=""/>
+            <input name="city" type="hidden" value=""/>
+            <input name="type" type="hidden" value=""/>
+            <button class="btn btn-outline-danger btn-sm mt-1" type="submit">حذف</button>
+        </form>
+    </td>
+</tr>
+
+</html>

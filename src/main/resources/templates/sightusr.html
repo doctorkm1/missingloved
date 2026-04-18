@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>بلاغ مشاهدة شخص</title>
+  <style>
+    /* (same style as reportmlcusrp.html) */
+    body {
+     font-family: 'Arial', sans-serif;
+     background: #f4f6f8;
+     direction: rtl;
+     padding: 30px;
+     max-width: 700px;
+     margin: auto; }
+    h1 { color: #333; text-align: center; }
+    form {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+    label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold; }
+    input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px; }
+    .error {
+    color: red; font-weight: bold; font-size: 0.9em; }
+    .success {
+    color: green; font-weight: bold; text-align: center; margin-top: 20px; }
+    .buttons {
+    margin-top: 20px; display: flex; justify-content: flex-start; gap: 5em; }
+    button {
+    padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    button:disabled {
+    background-color: #ccc; cursor: not-allowed; }
+    button:enabled {
+    background-color: #28a745; color: white; }
+
+    .reset-button { background-color: #dc3545; color: white; }
+    .back-button { background-color: #007bff; color: white; margin-right: auto; }
+    .success-buttons { margin-top: 20px; text-align: center; }
+  </style>
+</head>
+<body>
+<h1>تسجيل بيانات صاحب بلاغ مشاهدة شخص غائب</h1>
+
+<form id="sightusrForm" th:action="@{/sightusr}" th:object="${user}" method="post" novalidate>
+  <div class="success" th:if="${successMessage}">
+    <span th:text="${successMessage}">تم التسجيل بنجاح , إضغط إستمرار لتسجيل بيانات الحالة</span>
+    <button type="button" style="margin-right: 2em;" onclick="continueToScene()">إستمرار</button>
+  </div>
+
+  <div class="error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+  <!-- all fields copied exactly -->
+  <label>الاسم الأول:
+    <input type="text" th:field="*{firstName}" required />
+    <div class="error" th:errors="*{firstName}"></div>
+  </label>
+  <label>الاسم الثاني:
+    <input type="text" th:field="*{secondName}" required />
+    <div class="error" th:errors="*{secondName}"></div>
+  </label>
+
+    <label>الاسم الثالث:
+      <input type="text" th:field="*{thirdName}" required />
+      <div class="error" th:errors="*{thirdName}"></div>
+    </label>
+
+  <label>إسم العائلة:
+    <input type="text" th:field="*{familyName}" required />
+    <div class="error" th:errors="*{familyName}"></div>
+  </label>
+  <label>الجنس:
+    <select th:field="*{sex}" required>
+      <option value="">اختر الجنس</option>
+      <option value="ذكر">ذكر</option>
+      <option value="أنثى">أنثى</option>
+    </select>
+    <div class="error" th:errors="*{sex}"></div>
+  </label>
+  <label>الجنسية:
+    <input type="text" th:field="*{nationality}" required />
+    <div class="error" th:errors="*{nationality}"></div>
+  </label>
+  <label>الرقم القومي:
+    <input type="text" th:field="*{nationalId}" required maxlength="14" pattern="\d{14}" />
+    <div class="error" th:errors="*{nationalId}"></div>
+  </label>
+  <label>تاريخ الميلاد:
+    <input type="date" name="birthDate" required style="width: 180px; color: #000; font-weight: 600;" />
+    <div class="error" th:errors="*{birthDate}"></div>
+  </label>
+  <label>تليفون أرضي:
+    <input type="text" th:field="*{landline}" pattern="\d*" required />
+    <div class="error" th:errors="*{landline}"></div>
+  </label>
+  <label>موبايل:
+    <input type="text" th:field="*{mobile}" pattern="\d*" required />
+    <div class="error" th:errors="*{mobile}"></div>
+  </label>
+  <label>الدولة:
+    <input type="text" th:field="*{country}" required />
+    <div class="error" th:errors="*{country}"></div>
+  </label>
+  <label>المحافظة:
+    <input type="text" th:field="*{government}" required />
+    <div class="error" th:errors="*{government}"></div>
+  </label>
+  <label>المدينة:
+    <input type="text" th:field="*{city}" required />
+    <div class="error" th:errors="*{city}"></div>
+  </label>
+  <label>العنوان:
+    <input type="text" th:field="*{address}" required />
+    <div class="error" th:errors="*{address}"></div>
+  </label>
+  <label>البريد الإلكتروني:
+    <input type="email" th:field="*{email}" required />
+    <div class="error" th:errors="*{email}"></div>
+  </label>
+
+  <input type="hidden" id="userCode" th:field="*{userCode}" />
+  <input type="hidden" id="password" th:field="*{password}" />
+
+  <div class="buttons">
+    <button type="submit" id="submitBtn" disabled>تسجيل</button>
+    <button type="reset" class="reset-button">مسح</button>
+    <button type="button" class="back-button" onclick="location.href='/'">رجوع</button>
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById("sightusrForm");
+  const submitBtn = document.getElementById("submitBtn");
+
+  function validateField(field) {
+      const errorDiv = field.nextElementSibling;
+      if (errorDiv && errorDiv.classList.contains("error")) {
+          errorDiv.textContent = field.validity.valid ? "" : field.validationMessage;
+      }
+      toggleSubmit();
+  }
+
+  function toggleSubmit() {
+      const allValid = [...form.elements].every(el => el.checkValidity?.() ?? true);
+      submitBtn.disabled = !allValid;
+  }
+
+  function generateUserCode() {
+      const now = new Date();
+      const hhmm = now.getHours().toString().padStart(2, '0') +
+                   now.getMinutes().toString().padStart(2, '0');
+      const randomDigits = Math.floor(10000 + Math.random() * 90000);
+      return "usr" + hhmm + randomDigits;
+  }
+
+  function prepareAndSubmitForm(event) {
+      event.preventDefault();
+      if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+      }
+      const generatedUserCode = generateUserCode();
+      const passwordValue = "kmkmkmkmkm";
+
+      document.getElementById("userCode").value = generatedUserCode;
+      document.getElementById("password").value = passwordValue;
+
+      sessionStorage.setItem("generatedUserCode", generatedUserCode);
+      sessionStorage.setItem("generatedPassword", passwordValue);
+
+      form.submit();
+  }
+
+  function continueToScene() {
+      const userCode = sessionStorage.getItem("generatedUserCode");
+      if (userCode) {
+          location.href = "/sightmis?userCode=" + encodeURIComponent(userCode);
+      } else {
+          alert("لم يتم توليد كود المستخدم بعد.");
+      }
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+      [...form.querySelectorAll("input, select")].forEach(el => {
+          el.addEventListener("input", () => validateField(el));
+      });
+      toggleSubmit();
+      submitBtn.addEventListener("click", prepareAndSubmitForm);
+  });
+</script>
+</body>
+</html>

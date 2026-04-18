@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title> قائمة الأشخاص المعثور عليهم</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
+    <style>
+        html, body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+
+        .container {
+          flex: 1 0 auto;
+          padding-bottom: 150px; /* leaves space for footer */
+        }
+
+        .pagination-footer {
+          position: relative;
+          margin-top: -120px; /* pulls footer upward */
+        }
+    </style>
+    <style>
+        body {
+          padding-bottom: 160px; /* Ensures footer doesn't cover content */
+        }
+    </style>
+
+</head>
+<body class="bg-light p-4">
+<div class="container">
+    <div class="sticky-header">
+        <h2 class="mb-4 text-center"> قائمة الأشخاص المعثور عليهم </h2>
+        <!-- ✅ Filter Form -->
+        <form class="row g-2 mb-4" method="get" th:action="@{/found/list}">
+            <div class="col-md-3">
+                <input class="form-control" name="from" placeholder="من تاريخ" th:value="${from}" type="date" autofocus/>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" name="to" placeholder="إلى تاريخ" th:value="${to}" type="date"/>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" name="city" placeholder="المدينة" th:value="${city}" type="text"/>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="type" th:value="${type}">
+                    <option value="">كل الحالات</option>
+                    <option th:selected="${type == 'active'}" value="active">مفعل</option>
+                    <option th:selected="${type == 'inactive'}" value="inactive">غير مفعل</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-primary w-100" type="submit">بحث</button>
+            </div>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th style="min-width: 200px;">الاسم الكامل</th>
+                <th>نوع الاسم</th>
+                <th>الجنس</th>
+                <th>الرقم القومي</th>
+                <th>الدولة</th>
+                <th>المحافظة</th>
+                <th>المدينة</th>
+                <th style="min-width: 120px; max-width: 250px; white-space: normal;">العنوان</th>
+<!--                <th>العنوان</th>  --->
+                <th>تاريخ العثور</th>
+                <th>السن التقريبي</th>
+
+                <th>دولة المضيف</th>
+                <th>محافظة المضيف</th>
+                <th>مدينة المضيف</th>
+                <th>الحى/المنطقة</th>
+                <th>عنوان المضيف</th>
+                <th>إسم المضيف</th>
+                <th>موبايل المضيف</th>
+                <th>ت.أرضى المضيف</th>
+
+                <th>الحالة الصحية</th>
+                <th>نوع المستند</th>
+                <th>رقم المستند</th>
+                <th>صادر من</th>
+                <th>تاريخ المستند</th>
+                <th>تاريخ الصورة</th>
+                <th>صورة الشخص</th>
+                <th>صورة المستند</th>
+                <th>كود البلاغ</th>
+                <th>صاحب البلاغ</th>
+                <th>المنشئ</th>
+                <th>تاريخ الإنشاء</th>
+                <th>IP المنشئ</th>
+                <th>المفعل</th>
+                <th>تاريخ التفعيل</th>
+                <th>المفعل IP</th>
+                <th>المعطل</th>
+                <th>تاريخ التعطيل</th>
+                <th>المعطل IP</th>
+                <th>الحالة</th>
+                <th>إجراء</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="f, iStat : ${foundList}" th:id="'row-' + ${iStat.index} + '-' + ${f.id}">
+                <td th:text="${iStat.index + 1}"></td>
+                <td style="min-width: 200px;" th:text="${f.firstName + ' ' + f.secondName + ' ' + f.familyName}"></td>
+<!---                <td th:text="${f.firstName + ' ' + f.secondName + ' ' + f.familyName}"></td>  -->
+                <td th:text="${f.nameType}"></td>
+                <td th:text="${f.gender}"></td>
+                <td th:text="${f.nationalId}"></td>
+                <td th:text="${f.country}"></td>
+                <td th:text="${f.governorate}"></td>
+                <td th:text="${f.city}"></td>
+                <td style="min-width: 120px; max-width: 250px; white-space: normal; word-wrap: break-word;" th:text="${f.address}"></td>
+<!--                <td th:text="${f.address}"></td>  -->
+                <td th:text="${f.foundDate}"></td>
+                <td th:text="${f.approxAge}"></td>
+
+                <td th:text="${f.hCountry}"></td>
+                <td th:text="${f.hGovernorate}"></td>
+                <td th:text="${f.hCity}"></td>
+                <td th:text="${f.hDistrict}"></td>
+                <td th:text="${f.hAddress}"></td>
+                <td th:text="${f.hHostName}"></td>
+                <td th:text="${f.hMobile}"></td>
+                <td th:text="${f.hLandline}"></td>
+
+                <td th:text="${f.healthStatus}"></td>
+                <td th:text="${f.documentType}"></td>
+                <td th:text="${f.documentNumber}"></td>
+                <td th:text="${f.documentIssuedBy}"></td>
+                <td th:text="${f.documentDate}"></td>
+                <td th:text="${f.photoDate}"></td>
+                <td>
+                    <a class="btn btn-outline-primary btn-sm" target="_blank" th:href="@{'/' + ${f.photoUrl}}" th:if="${f.photoUrl != null}">عرض</a>
+                    <span th:if="${f.photoUrl == null}">---</span>
+                </td>
+                <td>
+                    <a class="btn btn-outline-secondary btn-sm" target="_blank" th:href="@{'/' + ${f.officialDocPath}}" th:if="${f.officialDocPath != null}">عرض</a>
+                    <span th:if="${f.officialDocPath == null}">---</span>
+                </td>
+                <td th:text="${f.caseCode}"></td>
+                <td th:text="${f.ReporterCode}"></td>
+                <td th:text="${f.createdBy != null ? f.createdBy.userCode : '---'}"></td>
+                <td th:text="${#temporals.format(f.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${f.createdIp}"></td>
+                <td th:text="${f.activatedBy != null ? f.activatedBy.userCode : '---'}"></td>
+                <td th:text="${f.activatedAt != null ? #temporals.format(f.activatedAt, 'yyyy-MM-dd HH:mm') : '---'}"></td>
+                <td th:text="${f.activatedIp}"></td>
+                <td th:text="${f.deactivatedBy != null ? f.deactivatedBy.userCode : '---'}"></td>
+                <td th:text="${f.deactivatedAt != null ? #temporals.format(f.deactivatedAt, 'yyyy-MM-dd HH:mm') : '---'}"></td>
+                <td th:text="${f.deactivatedIp}"></td>
+                <td>
+                    <span th:classappend="${f.activated} ? 'text-success' : 'text-warning'" th:text="${f.activated} ? 'تم التفعيل' : 'في الانتظار'"></span>
+                </td>
+                <td>
+                    <form th:action="@{${f.activated} ? '/found/deactivate/' + ${f.id} : '/found/activate/' + ${f.id}}" method="post">
+                        <input type="hidden" name="anchor" th:value="'btn-toggle-' + ${iStat.index} + '-' + ${f.id}" />
+                        <input type="hidden" name="page" th:value="${currentPage + ''}" />
+                        <input type="hidden" name="from" th:value="${from}" />
+                        <input type="hidden" name="to" th:value="${to}" />
+                        <input type="hidden" name="city" th:value="${city}" />
+                        <input type="hidden" name="type" th:value="${type}" />
+                        <button id="btn-toggle-[[${iStat.index}]]-[[${f.id}]]" tabindex="-1"
+                                type="submit"
+                                th:text="${f.activated} ? 'تعطيل' : 'تفعيل'"
+                                th:classappend="${f.activated} ? 'btn-warning' : 'btn-success'"
+                                class="btn btn-sm"></button>
+                    </form>
+                        <form method="post" th:action="@{/found/found/delete/{id}(id=${f.id})}">
+                            <input type="hidden" name="anchor" th:value="'btn-delete-' + ${iStat.index} + '-' + ${f.id}" />
+                            <input type="hidden" name="page" th:value="${currentPage + ''}" />
+                            <input type="hidden" name="from" th:value="${from}" />
+                            <input type="hidden" name="to" th:value="${to}" />
+                            <input type="hidden" name="city" th:value="${city}" />
+                            <input type="hidden" name="type" th:value="${type}" />
+                            <button id="btn-delete-[[${iStat.index}]]-[[${f.id}]]" tabindex="-1"
+                                    type="submit" class="btn btn-warning btn-sm">حذف</button>
+                        </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- ✅ Pagination -->
+    <!-- ✅ رجوع Button -->
+    <div style="text-align: left; margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+
+            <nav th:if="${totalPages > 1}">
+                <ul class="pagination justify-content-center mt-4">
+                    <!-- Previous Button -->
+                    <li class="page-item" th:if="${currentPage > 0}">
+                        <a class="page-link"
+                           th:href="@{/found/list(page=${currentPage - 1}, city=${city}, type=${type}, from=${from}, to=${to})}">
+                            السابق
+                        </a>
+                    </li>
+
+                    <!-- Page Number Buttons -->
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/found/list(page=${i}, city=${city}, type=${type}, from=${from}, to=${to})}"
+                           th:text="${i + 1}">1</a>
+                    </li>
+
+                    <!-- Next Button -->
+                    <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                        <a class="page-link"
+                           th:href="@{/found/list(page=${currentPage + 1}, city=${city}, type=${type}, from=${from}, to=${to})}">
+                            التالى
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <small style="font-size: 12px; color: black;">found-list.html</small>
+
+            <a class="btn btn-secondary" href="/" style="
+            background-color: #eee;
+            border: 1px solid #ccc;
+            padding: 6px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+            float: left;
+        ">
+            🔙 رجوع إلى الرئيسية
+        </a>
+        </div>
+    </div>
+</div>
+<script>
+    function activateFound(id) {
+      fetch(`/found/activate/${id}`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': getCsrfToken() }
+      }).then(res => {
+        if (res.ok) {
+          reloadRow(id);
+        } else {
+          alert("فشل التفعيل");
+        }
+      });
+    }
+
+
+    function deleteFound(id) {
+      if (!confirm("هل أنت متأكد من الحذف؟")) return;
+      fetch(`/delete/${id}`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': getCsrfToken() }
+      }).then(res => {
+        if (res.ok) {
+          document.getElementById("row-" + id).remove();
+        } else {
+          alert("فشل الحذف");
+        }
+      });
+    }
+
+    function reloadRow(id) {
+      fetch(`/found/row/${id}`)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newRow = doc.body.firstChild;
+          const currentRow = document.getElementById('row-' + id);
+          currentRow.replaceWith(newRow);
+          newRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          newRow.style.background = '#fef7d3';
+          setTimeout(() => newRow.style.background = '', 1500);
+        });
+    }
+
+    function getCsrfToken() {
+      const meta = document.querySelector('meta[name="_csrf"]');
+      if (meta) return meta.getAttribute('content');
+      const input = document.querySelector('input[name="_csrf"]');
+      if (input) return input.value;
+      return '';
+    }
+</script>
+<script>
+    function deactivateFound(id) {
+      fetch(`/deactivate/${id}`, { method: 'POST' })
+        .then(response => {
+          if (response.ok) {
+            location.reload(); // ✅ or reload specific row via AJAX
+          } else {
+            alert("تعذر تعطيل البلاغ.");
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("حدث خطأ أثناء المعالجة.");
+        });
+    }
+</script>
+<script>
+    window.addEventListener('load', function () {
+        // ✅ Focus first filter field ONLY if no anchor
+        if (!window.location.hash) {
+            const firstInput = document.querySelector("form input, form select");
+            if (firstInput) {
+                firstInput.focus();
+            }
+        }
+
+        // ✅ Scroll to button anchor if exists
+        setTimeout(() => {
+            const hash = window.location.hash;
+            if (hash) {
+                const target = document.querySelector(hash);
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "center" });
+                    target.style.transition = "background-color 1s ease";
+                    target.style.backgroundColor = "#ffff99";
+                    target.focus();
+                    setTimeout(() => target.style.backgroundColor = "", 2000);
+                }
+            }
+        }, 300);
+    });
+</script>
+<!-- Debug spacer to force scroll and test footer visibility -->
+<div style="height: 100px; background: #ffc; text-align: center; font-weight: bold;">
+</div>
+<script>
+    window.addEventListener('load', function () {
+        const headerCells = document.querySelectorAll('table thead th'); // no #fixed-header
+        const rows = document.querySelectorAll('div.table-responsive table tbody tr');
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            cells.forEach((cell, index) => {
+                if (headerCells[index]) {
+                    cell.setAttribute('title', headerCells[index].innerText.trim());
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

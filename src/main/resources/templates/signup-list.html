@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>قائمة المستخدمين</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <style>
+        td, th { font-size: 0.85rem; white-space: nowrap; }
+        .form-control-sm { font-size: 0.75rem; }
+    </style>
+</head>
+<body class="bg-light p-4">
+<div class="container">
+    <h2 class="mb-4 text-center">قائمة المستخدمين</h2>
+
+    <!-- Filters -->
+    <form method="get" class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" name="keyword" class="form-control" placeholder="بحث بالاسم أو الإيميل أو اسم المستخدم"
+                   th:value="${keyword}">
+        </div>
+        <div class="col-md-3">
+            <select name="authorityCode" class="form-select">
+                <option value="">كل الصلاحيات</option>
+                <option th:each="i : ${#numbers.sequence(0, 9)}"
+                        th:value="${i}" th:text="'صلاحية ' + ${i}"
+                        th:selected="${i == authorityCode}">
+                </option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">بحث</button>
+        </div>
+    </form>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>الاسم الكامل</th>
+                <th>الجنس</th>
+<!--                <th>الحالة الاجتماعية</th>   --->
+                <th>الجنسية</th>
+                <th>الرقم القومي</th>
+                <th>تاريخ الميلاد</th>
+                <th>تليفون أرضي</th>
+                <th>موبايل</th>
+                <th>الدولة</th>
+                <th>المحافظة</th>
+                <th>المدينة</th>
+                <th>العنوان</th>
+                <th>الإيميل</th>
+                <th>اسم المستخدم</th>
+                <th>كلمة السر</th>
+                <th>الصلاحية</th>
+                <th>منشئ</th>
+                <th>تاريخ الإنشاء</th>
+                <th>IP الإنشاء</th>
+                <th>مفعل بواسطة</th>
+                <th>وقت التفعيل</th>
+                <th>IP التفعيل</th>
+                <th>معطل بواسطة</th>
+                <th>وقت التعطيل</th>
+                <th>IP التعطيل</th>
+                <th>إجراء</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u, i : ${userList}">
+                <td th:text="${i.index + 1}"></td>
+                <td th:text="${(u.firstName ?: '') + ' ' + (u.secondName ?: '') + ' ' + (u.thirdName ?: '') + ' ' + (u.familyName ?: '')}"></td>
+                <td th:text="${u.sex}"></td>
+<!---                <td th:text="${u.maritalStatus}"></td>  --->
+                <td th:text="${u.nationality}"></td>
+                <td th:text="${u.nationalId}"></td>
+                <td th:text="${u.birthDate}"></td>
+                <td th:text="${u.landline}"></td>
+                <td th:text="${u.mobile}"></td>
+                <td th:text="${u.country}"></td>
+                <td th:text="${u.government}"></td>
+                <td th:text="${u.city}"></td>
+                <td th:text="${u.address}"></td>
+                <td th:text="${u.email}"></td>
+                <td th:text="${u.userCode}"></td>
+                <td th:text="${u.password}"></td>
+                <td th:text="${u.authorityCode}"></td>
+                <td th:text="${u.createdBy}"></td>
+                <td th:text="${#temporals.format(u.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${u.createdIp}"></td>
+                <td th:text="${u.activatedBy}"></td>
+                <td th:text="${#temporals.format(u.activatedAt, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${u.activationIp}"></td>
+                <td th:text="${u.deactivatedBy}"></td>
+                <td th:text="${#temporals.format(u.deactivatedAt, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${u.deactivationIp}"></td>
+                <td>
+                    <form th:action="@{'/admin/signup-list/update/' + ${u.id}}" method="post" class="d-flex gap-1 justify-content-center">
+                        <select name="authorityCode" class="form-select form-select-sm w-auto">
+                            <option th:each="i : ${#numbers.sequence(0, 9)}"
+                                    th:value="${i}" th:text="${i}"
+                                    th:selected="${i == u.authorityCode}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">✔</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav th:if="${totalPages > 1}" class="mt-3">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin/signup-list(page=${currentPage - 1}, keyword=${keyword}, authorityCode=${authorityCode})}">السابق</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link" th:href="@{/admin/signup-list(page=${i}, keyword=${keyword}, authorityCode=${authorityCode})}"
+                   th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{/admin/signup-list(page=${currentPage + 1}, keyword=${keyword}, authorityCode=${authorityCode})}">التالي</a>
+            </li>
+            <!-- Spacer -->
+            <li class="page-item disabled">
+                <span class="page-link">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </li>
+            <a href="/" class="btn btn-secondary" style="
+            background-color: #eee;
+            border: 1px solid #ccc;
+            padding: 6px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+            float: left;
+        ">
+                🔙 رجوع إلى الرئيسية
+            </a>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

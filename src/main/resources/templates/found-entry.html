@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>تسجيل شخص معثور عليه</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <style>
+        .form-label { font-weight: bold; }
+        .field-error { background-color: #ffe5e5; }
+        label[for="governorate"], label[for="city"], label[for="zon1"],
+        label[for="hGovernorate"], label[for="hCity"], label[for="hDistrict"] {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="bg-light p-4">
+<div class="container">
+    <h2 class="mb-4 text-center"> تسجيل شخص معثور عليه</h2>
+
+    <!-- Messages -->
+    <div th:if="${successMessage}" class="alert alert-success text-center"><span th:text="${successMessage}"></span></div>
+    <div th:if="${warningMessage}" class="alert alert-warning text-center"><span th:text="${warningMessage}"></span></div>
+    <div th:if="${errorMessage}" class="alert alert-danger text-center"><span th:text="${errorMessage}"></span></div>
+
+    <form th:action="@{/found/report}" th:object="${found}" method="post" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate id="foundForm">
+
+        <!-- Names -->
+        <div class="col-md-4">
+            <label class="form-label">الاسم الأول</label>
+            <input type="text" class="form-control required" th:field="*{firstName}" id="firstName" required minlength="2">
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">الاسم الثاني</label>
+            <input type="text" class="form-control required" th:field="*{secondName}" id="secondName" required minlength="2">
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">الاسم الثالث</label>
+            <input type="text" class="form-control required" th:field="*{familyName}" id="familyName" required minlength="2">
+        </div>
+
+        <!-- Name Type / Gender / ID -->
+        <div class="col-md-4">
+            <label class="form-label">نوع الاسم</label>
+            <select class="form-select required" th:field="*{nameType}" required>
+                <option value="">اختر</option>
+                <option value="مؤقت">مؤقت</option>
+                <option value="نهائي">نهائي</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">الجنس</label>
+            <select class="form-select required" th:field="*{gender}" required>
+                <option value="">اختر</option>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">الرقم القومي (إن وجد)</label>
+            <input type="tel" th:field="*{nationalId}" class="form-control" id="nationalId" maxlength="14" pattern="\d{14}" title="إذا تم إدخاله، يجب أن يتكون من 14 رقمًا">
+        </div>
+
+        <!-- Found Location -->
+        <div class="row mt-3">
+            <div class="col-md-2">
+                <label class="form-label">مكان العثور: الدولة</label>
+                <input type="text" class="form-control required" th:field="*{country}" th:value="${found.country ?: 'مصر'}" required>
+            </div>
+            <div class="col-md-2">
+                <label for="governorate" class="form-label">المحافظة</label>
+                <select id="governorate" name="governorate" class="form-select required" required>
+                    <option value="">اختر المحافظة...</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="city" class="form-label">المدينة</label>
+                <select id="city" name="city" class="form-select required" required>
+                    <option value="">اختر المدينة...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="zon1" class="form-label">الحي/المنطقة</label>
+                <select id="zon1" name="district" th:field="*{district}" class="form-select">
+                    <option value="">إختر الحي/المنطقة (اختياري)</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">العنوان</label>
+                <input type="text" class="form-control required" th:field="*{address}" required>
+            </div>
+        </div>
+        <input type="hidden" th:field="*{governorate}" id="governorateName">
+        <input type="hidden" th:field="*{city}" id="cityName">
+        <input type="hidden" th:field="*{district}" id="zon1Name">
+
+        <div class="col-md-6">
+            <label class="form-label">تاريخ العثور</label>
+            <input type="date" class="form-control required" th:field="*{foundDate}" required>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">السن التقريبي</label>
+            <input type="number" class="form-control required" th:field="*{approxAge}" required>
+        </div>
+
+        <!-- Host Location -->
+        <div class="row mt-3">
+            <div class="col-md-2">
+                <label class="form-label">مكان الإستضافة: الدولة</label>
+                <input type="text" class="form-control required" th:field="*{hCountry}" th:value="${found.hCountry ?: 'مصر'}" required>
+            </div>
+            <div class="col-md-2">
+                <label for="hGovernorate" class="form-label">المحافظة</label>
+                <select id="hGovernorate" name="hGovernorate" class="form-select required" required>
+                    <option value="">اختر المحافظة...</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="hCity" class="form-label">المدينة</label>
+                <select id="hCity" name="hCity" class="form-select required" required>
+                    <option value="">اختر المدينة...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="hDistrict" class="form-label">الحي/المنطقة</label>
+                <select id="hDistrict" name="hDistrict" th:field="*{hDistrict}" class="form-select">
+                    <option value="">إختر الحي/المنطقة (اختياري)</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">العنوان</label>
+                <input type="text" class="form-control required" th:field="*{hAddress}" required>
+            </div>
+        </div>
+        <input type="hidden" th:field="*{hGovernorate}" id="hGovernorateName">
+        <input type="hidden" th:field="*{hCity}" id="hCityName">
+        <input type="hidden" th:field="*{hDistrict}" id="hDistrictName">
+
+        <!-- Host Person -->
+        <div class="row mt-3">
+            <div class="col-md-4"><label class="form-label">إسم المضيف</label><input type="text" class="form-control" th:field="*{hHostName}" placeholder="الإسم بالكامل" required></div>
+            <div class="col-md-4"><label class="form-label">رقم الموبايل</label><input type="tel" class="form-control" th:field="*{hMobile}" placeholder="رقم الموبايل" required pattern="\d{10,15}"></div>
+            <div class="col-md-4"><label class="form-label">رقم التليفون الأرضي (اختياري)</label><input type="tel" class="form-control" th:field="*{hLandline}" placeholder="الهاتف الأرضي"></div>
+        </div>
+
+        <!-- Remaining fields (health, documents, etc.) -->
+        <div class="col-md-6">
+            <label class="form-label">الحالة الصحية</label>
+            <select class="form-select required" th:field="*{healthStatus}" required>
+                <option value="">اختر</option>
+                <option value="جيدة">جيدة</option>
+                <option value="معاق">معاق</option>
+                <option value="معاق ذهنيا">معاق ذهنيا</option>
+                <option value="توحد">توحد</option>
+                <option value="مريض نفسى">مريض نفسى</option>
+                <option value="سكر">سكر</option>
+                <option value="ضغط">ضغط</option>
+            </select>
+        </div>
+
+        <!-- Document & Photo Fields -->
+        <div class="col-md-3"><label class="form-label">نوع المستند</label><input type="text" name="documentType" class="form-control required" required></div>
+        <div class="col-md-3"><label class="form-label">رقم المستند</label><input type="text" name="documentNumber" class="form-control required" required></div>
+        <div class="col-md-3"><label class="form-label">صادر من</label><input type="text" name="documentIssuedBy" class="form-control required" required></div>
+        <div class="col-md-3"><label class="form-label">تاريخ المستند</label><input type="date" name="documentDate" class="form-control required" required></div>
+
+        <div class="col-md-6"><label class="form-label">صورة المستند</label><input type="file" name="document" class="form-control required" required></div>
+        <div class="col-md-6"><label class="form-label">صورة الشخص</label><input type="file" name="photo" class="form-control required" required></div>
+        <div class="col-md-3"><label class="form-label">تاريخ الصورة</label><input type="date" name="photoDate" class="form-control required" required></div>
+
+        <div class="col-12 d-flex justify-content-between align-items-center mt-4">
+            <!-- Left side: Action buttons -->
+            <div class="d-flex align-items-center">
+                <button type="submit" id="submitBtn" class="btn btn-primary me-3 px-4" disabled>تسجيل</button>
+                <button type="reset" class="btn btn-secondary px-4">مسح</button>
+            </div>
+
+            <!-- Center: Processing message -->
+            <div id="waitMessage" style="display:none; text-align:center; color:#b30000; font-weight:bold;">
+                ⏳ جاري معالجة البلاغ، يرجى الانتظار...
+            </div>
+
+            <!-- Right side: File note + back button -->
+            <div class="d-flex align-items-center">
+                <small style="font-size:11px;color:gray;" class="me-3">found-entry.html</small>
+                <button type="button" class="btn btn-outline-dark px-4" onclick="history.back()">رجوع</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("foundForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const requiredInputs = form.querySelectorAll(".required");
+
+        function validateField(field) {
+            if (field.type === "file") return field.files.length > 0;
+            if (field.name === "nationalId") {
+                const val = field.value.trim();
+                if (val === "") return true;
+                return /^\d{14}$/.test(val);
+            }
+            if (field.tagName === "SELECT" && field.hasAttribute("required")) {
+                return field.value.trim() !== "";
+            }
+            if (field.hasAttribute("required") && field.value.trim() === "") return false;
+            if (field.hasAttribute("minlength"))
+                return field.value.trim().length >= parseInt(field.getAttribute("minlength"));
+            return true;
+        }
+
+        function validateForm() {
+            let allValid = true;
+            requiredInputs.forEach(input => {
+                const isValid = validateField(input);
+                input.classList.toggle("field-error", !isValid);
+                allValid = allValid && isValid;
+            });
+            submitBtn.disabled = !allValid;
+        }
+
+        requiredInputs.forEach(input => {
+            input.addEventListener("input", validateForm);
+            if (input.tagName === "SELECT") input.addEventListener("change", validateForm);
+            if (input.type === "file") input.addEventListener("change", validateForm);
+        });
+
+        validateForm();
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("foundForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const resetBtn = form.querySelector('button[type="reset"]');
+        const backBtn = form.querySelector('button[onclick^="history.back"]');
+        const waitMsg = document.getElementById("waitMessage");
+
+        if (!form || !submitBtn || !waitMsg) return;
+
+        form.addEventListener("submit", function () {
+            submitBtn.disabled = true;
+            if (resetBtn) resetBtn.disabled = true;
+            if (backBtn) backBtn.disabled = true;
+            waitMsg.style.display = "block";
+        });
+    });
+</script>
+
+<!-- Scripts for Found Location (existing) -->
+<script>
+    async function loadGovernments() {
+        const govSelect = document.getElementById("governorate");
+        govSelect.innerHTML = '<option value="">تحميل المحافظات...</option>';
+        try {
+            const res = await fetch('/api/locations/governments');
+            const data = await res.json();
+            govSelect.innerHTML = '<option value="">اختر المحافظة...</option>';
+            data.forEach(loc => {
+                const option = document.createElement("option");
+                option.value = loc.gov;
+                option.textContent = loc.description.trim();
+                govSelect.appendChild(option);
+            });
+        } catch { govSelect.innerHTML = '<option value="">تعذر تحميل المحافظات</option>'; }
+    }
+
+    async function loadCities(govCode) {
+        const citySelect = document.getElementById("city");
+        citySelect.innerHTML = '<option value="">تحميل المدن...</option>';
+        try {
+            const res = await fetch(`/api/locations/cities/${govCode}`);
+            const data = await res.json();
+            citySelect.innerHTML = '<option value="">اختر المدينة...</option>';
+            data.forEach(loc => {
+                const option = document.createElement("option");
+                option.value = loc.pol;
+                option.textContent = loc.description.trim();
+                citySelect.appendChild(option);
+            });
+        } catch { citySelect.innerHTML = '<option value="">تعذر تحميل المدن</option>'; }
+    }
+
+    async function loadZon1() {
+        const govCode = document.getElementById("governorate").value;
+        const cityCode = document.getElementById("city").value;
+        const zon1Select = document.getElementById("zon1");
+        zon1Select.innerHTML = '<option value="">تحميل الأحياء...</option>';
+        try {
+            const res = await fetch(`/api/locations/zon1/${govCode}${cityCode}`);
+            const data = await res.json();
+            zon1Select.innerHTML = '<option value="">-- اختر الحي / المنطقة --</option>';
+            data.forEach(loc => {
+                const opt = document.createElement("option");
+                opt.value = loc.zon1;
+                opt.textContent = loc.description.trim();
+                zon1Select.appendChild(opt);
+            });
+        } catch { zon1Select.innerHTML = '<option value="">تعذر تحميل الأحياء</option>'; }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadGovernments();
+        document.getElementById("governorate").addEventListener("change", e => {
+            const val = e.target.value;
+            if (val) {
+                loadCities(val);
+                document.getElementById("zon1").innerHTML = '<option value="">-- اختر الحي / المنطقة --</option>';
+            } else {
+                document.getElementById("city").innerHTML = '<option value="">اختر المدينة...</option>';
+                document.getElementById("zon1").innerHTML = '<option value="">-- اختر الحي / المنطقة --</option>';
+            }
+        });
+        document.getElementById("city").addEventListener("change", e => {
+            if (e.target.value) loadZon1();
+        });
+    });
+</script>
+
+<!-- Scripts for Host Location (new) -->
+<script>
+    async function loadHGovernments() {
+        const govSelect = document.getElementById("hGovernorate");
+        govSelect.innerHTML = '<option value="">تحميل المحافظات...</option>';
+        try {
+            const res = await fetch('/api/locations/governments');
+            const data = await res.json();
+            govSelect.innerHTML = '<option value="">اختر المحافظة...</option>';
+            data.forEach(loc => {
+                const opt = document.createElement("option");
+                opt.value = loc.gov;
+                opt.textContent = loc.description.trim();
+                govSelect.appendChild(opt);
+            });
+        } catch { govSelect.innerHTML = '<option value="">تعذر تحميل المحافظات</option>'; }
+    }
+
+    async function loadHCities(govCode) {
+        const citySelect = document.getElementById("hCity");
+        citySelect.innerHTML = '<option value="">تحميل المدن...</option>';
+        try {
+            const res = await fetch(`/api/locations/cities/${govCode}`);
+            const data = await res.json();
+            citySelect.innerHTML = '<option value="">اختر المدينة...</option>';
+            data.forEach(loc => {
+                const opt = document.createElement("option");
+                opt.value = loc.pol;
+                opt.textContent = loc.description.trim();
+                citySelect.appendChild(opt);
+            });
+        } catch { citySelect.innerHTML = '<option value="">تعذر تحميل المدن</option>'; }
+    }
+
+    async function loadHZon1() {
+        const govCode = document.getElementById("hGovernorate").value;
+        const cityCode = document.getElementById("hCity").value;
+        const zon1Select = document.getElementById("hDistrict");
+        zon1Select.innerHTML = '<option value="">تحميل الأحياء...</option>';
+        try {
+            const res = await fetch(`/api/locations/zon1/${govCode}${cityCode}`);
+            const data = await res.json();
+            zon1Select.innerHTML = '<option value="">-- اختر الحي / المنطقة --</option>';
+            data.forEach(loc => {
+                const opt = document.createElement("option");
+                opt.value = loc.zon1;
+                opt.textContent = loc.description.trim();
+                zon1Select.appendChild(opt);
+            });
+        } catch { zon1Select.innerHTML = '<option value="">تعذر تحميل الأحياء</option>'; }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadHGovernments();
+        document.getElementById("hGovernorate").addEventListener("change", e => {
+            const val = e.target.value;
+            if (val) {
+                loadHCities(val);
+                document.getElementById("hDistrict").innerHTML = '<option value="">-- اختر الحي / المنطقة --</option>';
+            }
+        });
+        document.getElementById("hCity").addEventListener("change", e => {
+            if (e.target.value) loadHZon1();
+        });
+
+        // Copy names for host and found locations on submit
+        document.getElementById("foundForm").addEventListener("submit", () => {
+            // Found fields
+            const g = document.getElementById("governorate"), c = document.getElementById("city"), d = document.getElementById("zon1");
+            if (g.selectedIndex>0) document.getElementById("governorateName").value = g.options[g.selectedIndex].textContent.trim();
+            if (c.selectedIndex>0) document.getElementById("cityName").value = c.options[c.selectedIndex].textContent.trim();
+            if (d.selectedIndex>0) document.getElementById("zon1Name").value = d.options[d.selectedIndex].textContent.trim();
+            g.removeAttribute("name"); c.removeAttribute("name"); d.removeAttribute("name");
+
+            // Host fields
+            const hg = document.getElementById("hGovernorate"), hc = document.getElementById("hCity"), hd = document.getElementById("hDistrict");
+            if (hg.selectedIndex>0) document.getElementById("hGovernorateName").value = hg.options[hg.selectedIndex].textContent.trim();
+            if (hc.selectedIndex>0) document.getElementById("hCityName").value = hc.options[hc.selectedIndex].textContent.trim();
+            if (hd.selectedIndex>0) document.getElementById("hDistrictName").value = hd.options[hd.selectedIndex].textContent.trim();
+            hg.removeAttribute("name"); hc.removeAttribute("name"); hd.removeAttribute("name");
+        });
+    });
+</script>
+</body>
+</html>

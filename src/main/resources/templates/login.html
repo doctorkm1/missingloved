@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>تسجيل الدخول Login.html</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: rgba(0, 0, 0, 0.2); /* Optional overlay effect */
+            margin: 0;
+        }
+
+        .login-popup {
+            width: 320px;
+            background-color: white;
+            position: fixed;
+            top: 100px;
+            right: 40px; /* adjust this to set relative location */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 4px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.85rem;
+            margin-top: 3px;
+        }
+
+        .captcha {
+            margin-top: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-popup">
+    <h2>تسجيل الدخول</h2>
+
+       <form id="loginForm" th:action="@{/signin}" method="post" onsubmit="return validateForm()">
+        <label for="userCode">كود المستخدم:</label>
+           <input type="text" id="userCode" name="userCode" required autofocus>
+        <div class="error-message" id="userCodeError"></div>
+
+        <label for="password">كلمة المرور:</label>
+        <input type="password" id="password" name="password" required>
+        <div class="error-message" id="passwordError"></div>
+
+        <div class="captcha">
+            <input type="checkbox" id="captchaCheck" required>
+            <label for="captchaCheck">أؤكد أنني لست روبوت</label>
+            <div class="error-message" id="captchaError"></div>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" id="loginBtn" class="login-btn" disabled>دخول</button>
+            <button type="button" onclick="window.location.href='/'" class="cancel-btn">إلغاء</button>
+        </div>
+
+        <!-- Server-side error -->
+        <div th:if="${loginError}" class="error-message text-center mt-2" th:text="${loginError}"></div>
+    </form>
+</div>
+
+<script>
+    const userCodeInput = document.getElementById('userCode');
+    const passwordInput = document.getElementById('password');
+    const captchaCheck = document.getElementById('captchaCheck');
+    const loginBtn = document.getElementById('loginBtn');
+
+    const userCodeError = document.getElementById('userCodeError');
+    const passwordError = document.getElementById('passwordError');
+    const captchaError = document.getElementById('captchaError');
+
+    function validateForm() {
+        let valid = true;
+        userCodeError.textContent = '';
+        passwordError.textContent = '';
+        captchaError.textContent = '';
+
+        if (userCodeInput.value.trim() === '') {
+            userCodeError.textContent = 'يرجى إدخال كود المستخدم';
+            valid = false;
+        }
+
+        if (passwordInput.value.trim() === '') {
+            passwordError.textContent = 'يرجى إدخال كلمة المرور';
+            valid = false;
+        }
+
+        if (!captchaCheck.checked) {
+            captchaError.textContent = 'يرجى تأكيد أنك لست روبوت';
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    function checkEnableLogin() {
+        loginBtn.disabled = !(
+            userCodeInput.value.trim() !== '' &&
+            passwordInput.value.trim() !== '' &&
+            captchaCheck.checked
+        );
+    }
+
+    userCodeInput.addEventListener('input', checkEnableLogin);
+    passwordInput.addEventListener('input', checkEnableLogin);
+    captchaCheck.addEventListener('change', checkEnableLogin);
+</script>
+
+</body>
+</html>

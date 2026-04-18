@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Found Row Fragment</title>
+</head>
+<body>
+<!-- src/main/resources/templates/fragments/found-row.html -->
+<tr th:id="'row-' + ${f.id}" th:fragment="row(f)">
+  <td th:text="${f.id}">ID</td>
+  <td th:text="${f.caseCode}">Case Code</td>
+  <td th:text="${f.firstName}">First Name</td>
+  <td th:text="${f.secondName}">Second Name</td>
+  <td th:text="${f.familyName}">Family Name</td>
+  <td th:text="${f.nationalId}">National ID</td>
+  <td th:text="${f.activated} ? 'مفعل' : 'غير مفعل'">Status</td>
+  <td>
+    <button th:if="${!f.activated}" class="btn btn-success btn-sm"
+            th:onclick="'activateFound(' + ${f.id} + ')'">تفعيل</button>
+    <button th:if="${f.activated}" class="btn btn-warning btn-sm"
+            th:onclick="'deactivateFound(' + ${f.id} + ')'">تعطيل</button>
+    <button class="btn btn-danger btn-sm"
+            th:onclick="'deleteFound(' + ${f.id} + ')'">حذف</button>
+  </td>
+</tr>
+</body>
+</html>

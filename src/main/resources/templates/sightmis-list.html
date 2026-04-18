@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>قائمة بلاغات المشاهدة</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+  <style>
+    body { padding: 2rem; background-color: #f8f9fa; }
+    h2 { margin-bottom: 1rem; text-align: center; }
+    .controls-row { margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    .controls-row .filters, .controls-row .pagination-controls { display: flex; gap: 1rem; align-items: center; }
+    .table-actions button { margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>قائمة بلاغات المشاهدة</h2>
+
+  <div class="controls-row">
+    <div class="filters">
+      <label for="sort">الفرز:</label>
+      <select id="sort" class="form-select form-select-sm">
+        <option>حسب التاريخ</option>
+        <option>حسب الدولة</option>
+        <option>حسب المدينة</option>
+      </select>
+
+      <label for="status">الحالة:</label>
+      <select id="status" class="form-select form-select-sm">
+        <option>الكل</option>
+        <option>مفعّل</option>
+        <option>غير مفعّل</option>
+      </select>
+    </div>
+    <div class="pagination-controls ms-auto">
+      <a href="/logout" class="btn btn-sm btn-outline-dark">خروج</a>
+    </div>
+  </div>
+
+  <div th:if="${message}" class="alert alert-info text-center" th:text="${message}"></div>
+
+  <table class="table table-bordered table-striped text-center">
+    <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>كود سجل المشاهدة</th>
+      <th>الكود المرجعي للغائب</th>
+      <th>الدولة</th>
+      <th>المحافظة</th>
+      <th>المدينة</th>
+      <th>المركز/الحى</th>
+      <th>العنوان</th>
+      <th>تاريخ المشاهدة</th>
+      <th>وقت المشاهدة</th>
+      <th>تاريخ البلاغ</th>
+      <th>إخفاء المصدر</th>
+      <th>المُبلّغ</th>
+      <th>أنشئ بواسطة</th>
+      <th>IP الإنشاء</th>
+      <th>تاريخ ووقت الإنشاء</th>
+      <th>نشّط بواسطة</th>
+      <th>IP التنشيط</th>
+      <th>تاريخ ووقت التنشيط</th>
+      <th>ألغى التنشيط</th>
+      <th>IP إلغاء التنشيط</th>
+      <th>تاريخ ووقت إلغاء التنشيط</th>
+      <th>الإجراءات</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="s, stat : ${sightmisList}">
+      <td th:text="${stat.index + 1}"></td>
+      <td th:text="${s.sightmiscode}"></td>
+      <td th:text="${s.missingcode}"></td>
+      <td th:text="${s.mseencountry}"></td>
+      <td th:text="${s.mseengov}"></td>
+      <td th:text="${s.mseencity}"></td>
+      <td th:text="${s.mseendistrict}"></td>
+      <td th:text="${s.mseenaddress}"></td>
+      <td th:text="${s.mseendate}"></td>
+      <td th:text="${s.mseentime}"></td>
+      <td th:text="${s.reportdate}"></td>
+      <td th:text="${s.msightrepagree} ? 'نعم' : 'لا'"></td>
+      <td th:text="${s.mseenreportedby}"></td>
+      <td th:text="${s.mseencreatedby}"></td>
+      <td th:text="${s.mseencreatedip}"></td>
+      <td th:text="${#temporals.format(s.mseencreatedat, 'yyyy-MM-dd HH:mm:ss')}"></td>
+
+      <!--      <td th:text="${#dates.format(s.mseencreatedtimestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>  --->
+      <td th:text="${s.mseenactivatedby}"></td>
+      <td th:text="${s.mseenactivatedip}"></td>
+      <td th:text="${#temporals.format(s.mseenactivatedat, 'yyyy-MM-dd HH:mm:ss')}"></td>
+
+      <!---      <td th:text="${#dates.format(s.mseenactivatedtimestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>  --->
+      <td th:text="${s.mseendeactivatedby}"></td>
+      <td th:text="${s.mseendeactivatedip}"></td>
+      <td th:text="${#temporals.format(s.mseendeactivatedat, 'yyyy-MM-dd HH:mm:ss')}"></td>
+
+      <!---      <td th:text="${#dates.format(s.mseendeactivatedtimestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>  --->
+
+      <td class="table-actions">
+        <form th:action="@{${s.mseenactivatedby == null ? '/sightmis/activate/' + s.id : '/sightmis/deactivate/' + s.id}}" method="post" style="display:inline;">
+          <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+          <button type="submit" class="btn"
+                  th:classappend="${s.mseenactivatedby == null ? 'btn-success' : 'btn-warning'}"
+                  th:text="${s.mseenactivatedby == null ? 'تفعيل' : 'تعطيل'}">
+          </button>
+        </form>
+        <form th:action="@{'/sightmis/delete/' + ${s.id}}" method="post"
+              onsubmit="return confirm('هل أنت متأكد من الحذف؟');">
+          <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+          <button type="submit" class="btn btn-outline-danger btn-sm mt-1">حذف</button>
+        </form>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination-footer d-flex justify-content-between align-items-center">
+  <!-- File name on the left -->
+  <small style="font-size: 11px; color: black;">sightmis-list</small>
+
+  <!-- Back to home button -->
+  <div class="left-button">
+    <a class="btn btn-secondary" href="/">🔙 رجوع إلى الرئيسية</a>
+  </div>
+
+  <!-- Pagination -->
+  <th:block th:if="${currentPage != null}">
+    <a class="btn btn-outline-primary"
+       th:classappend="${currentPage == 0} ? ' disabled'"
+       th:href="@{/case/list(page=${currentPage - 1}, size=10, city=${city}, type=${type}, from=${from}, to=${to})}">
+      ⬅️ السابق
+    </a>
+    <th:block th:each="page : ${#numbers.sequence(0, totalPages - 1)}">
+      <a class="btn"
+         th:classappend="${page == currentPage} ? 'btn-primary' : 'btn-outline-secondary'"
+         th:href="@{/case/list(page=${page}, size=10, city=${city}, type=${type}, from=${from}, to=${to})}">
+        <span th:text="${page + 1}">1</span>
+      </a>
+    </th:block>
+    <a class="btn btn-outline-primary"
+       th:classappend="${currentPage == totalPages - 1} ? ' disabled'"
+       th:href="@{/case/list(page=${currentPage + 1}, size=10, city=${city}, type=${type}, from=${from}, to=${to})}">
+      التالي ➡️
+    </a>
+  </th:block>
+</div>
+
+</body>
+</html>

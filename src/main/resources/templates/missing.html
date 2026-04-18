@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title> missing htmlنموذج بلاغ عن شخص مفقود</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
+    <style>
+        .form-label { font-weight: bold; }
+        .error-msg { color: red; font-size: 0.9em; display: none; }
+        .field-error { background-color: #ffe5e5; }
+        .alert-msg { color: red; font-weight: bold; display: none; text-align: center; margin-top: 10px; }
+    </style>
+</head>
+<body class="bg-light p-4">
+<div class="container">
+    <h2 class="mb-4 text-center">نموذج بلاغ عن شخص مفقود missing html</h2>
+
+    <div th:if="${successMessage}" class="alert alert-success text-center">
+        <span th:text="${successMessage}"></span>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert alert-danger text-center">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+
+    <form class="row g-3 needs-validation" enctype="multipart/form-data" id="missingForm" method="post" novalidate th:action="@{/missing/create}" th:object="${missing}">
+
+        <!-- الاسم -->
+        <div class="col-md-4">
+            <label class="form-label">الاسم الأول</label>
+            <input class="form-control required" id="firstName" required th:field="*{firstName}" type="text"/>
+            <div class="text-danger small" id="error-firstName" style="display:none;">الاسم يجب أن لا يقل عن حرفين</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">الاسم الثاني</label>
+            <input class="form-control required" id="secondName" required th:field="*{secondName}" type="text"/>
+            <div class="text-danger small" id="error-secondName" style="display:none;">الاسم يجب أن لا يقل عن حرفين</div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">الاسم الثالث</label>
+            <input class="form-control required" id="familyName" required th:field="*{familyName}" type="text"/>
+            <div class="text-danger small" id="error-familyName" style="display:none;">الاسم يجب أن لا يقل عن حرفين</div>
+        </div>
+        <!-- بيانات شخصية -->
+        <div class="col-md-4">
+            <label class="form-label">الجنس</label>
+            <select class="form-select required" required th:field="*{gender}">
+                <option value="">اختر</option>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+        </div>
+
+<!---     from reportmlcusr      ----->
+
+        <div class="col-md-4">
+            <label class="form-label">الجنسية</label>
+            <input class="form-control required" id="nationality" required th:field="*{nationality}" type="text"/>
+            <div class="text-danger small" id="error-nationality" style="display:none;">الجنسية يجب أن لا تقل عن حرفين</div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">الرقم القومي</label>
+            <input class="form-control required" id="nationalId" pattern="\d{14}" required th:field="*{nationalId}" type="text"/>
+            <div class="text-danger small" id="error-nationalId" style="display:none;">الرقم القومي يجب أن يتكون من 14 رقمًا</div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">تاريخ الميلاد</label>
+            <input class="form-control required" required th:field="*{dob}" type="date"/>
+        </div>
+        <div th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" class="text-danger small"></div>
+
+        <!-- عنوان الغائب -->
+        <div class="col-12"><h5>عنوان الغائب</h5></div>
+        <div class="col-md-3">
+            <label class="form-label">الدولة</label>
+            <input class="form-control required" required th:field="*{country}" type="text" value="مصر"/>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">المحافظة</label>
+            <input class="form-control required" required th:field="*{government}" type="text"/>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">المدينة</label>
+            <input class="form-control required" required th:field="*{city}" type="text"/>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">العنوان</label>
+            <input class="form-control required" required th:field="*{address}" type="text"/>
+        </div>
+        <!-- تواصل -->
+        <div class="col-md-4">
+            <label class="form-label">هاتف أرضي</label>
+            <input type="tel" class="form-control required" th:field="*{landline}" pattern="\d+" title="أرقام فقط" maxlength="15" required>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">موبايل</label>
+            <input type="tel" class="form-control required" th:field="*{mobile}" pattern="\d+" title="أرقام فقط" maxlength="15" required>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">صلة صاحب البلاغ بالغائب</label>
+            <select class="form-select required" required th:field="*{reporterRelation}">
+                <option value="">اختر</option>
+                <option value="الوالد">الوالد</option>
+                <option value="الأم">الأم</option>
+                <option value="الأخ">الأخ</option>
+                <option value="الأخت">الأخت</option>
+                <option value="الزوج">الزوج</option>
+                <option value="الزوجة">الزوجة</option>
+                <option value="قريب">قريب</option>
+                <option value="صديق">صديق</option>
+                <option value="جار">جار</option>
+            </select>
+            <div th:if="${#fields.hasErrors('reporterRelation')}" th:errors="*{reporterRelation}" class="text-danger small"></div>
+        </div>
+        <!-- مكان الفقد -->
+        <div class="col-12"><h5>مكان الفقد</h5></div>
+        <div class="col-md-3">
+            <label class="form-label">الدولة</label>
+            <input class="form-control required" required th:field="*{lastSeenCountry}" type="text" value="مصر"/>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">المحافظة</label>
+            <input class="form-control required" required th:field="*{lastSeenGovernorate}" type="text"/>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">المدينة</label>
+            <input class="form-control required" required th:field="*{lastSeenCity}" type="text"/>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">العنوان</label>
+            <input class="form-control required" required th:field="*{lastSeenLocation}" type="text"/>
+        </div>
+
+        <!-- معلومات إضافية -->
+        <div class="col-md-4">
+            <label class="form-label">تاريخ الفقد</label>
+            <input class="form-control required" required th:field="*{lastSeenDate}" type="date"/>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">السن عند الفقد</label>
+            <input class="form-control required" required th:field="*{age}" type="number"/>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">الحالة الصحية</label>
+            <select class="form-select required" required th:field="*{healthStatus}">
+                <option value="">اختر</option>
+                <option value="جيدة">جيدة</option>
+                <option value="معاق">معاق</option>
+                <option value="معاق ذهنيا">معاق ذهنيا</option>
+                <option value="توحد">توحد</option>
+                <option value="مريض نفسى">مريض نفسى</option>
+                <option value="سكر">سكر</option>
+                <option value="ضغط">ضغط</option>
+            </select>
+        </div>
+        <!-- المستندات -->
+        <div class="col-md-3">
+            <label class="form-label">نوع مستند الفقد الرسمى</label>
+            <input type="text" name="documentType" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">رقم المستند</label>
+            <input type="text" name="documentNumber" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">صادر من</label>
+            <input type="text" name="documentIssuedBy" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">تاريخ المستند</label>
+            <input type="date" name="documentDate" class="form-control">
+        </div>
+
+        <!-- الصور -->
+        <div class="col-md-6">
+            <label class="form-label">صورة الغائب (اختياري)</label>
+            <input type="file" name="photo" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">صورة المستند</label>
+            <input type="file" name="document" class="form-control" required>
+        </div>
+
+        <!-- الأزرار -->
+        <div class="col-12 d-flex justify-content-between mt-4">
+            <div>
+                <button type="submit" id="submitBtn" class="btn btn-primary me-3 px-4" disabled>إرسال البلاغ</button>
+                <button type="button" id="clearBtn" class="btn btn-secondary px-4">مسح</button>
+            </div>
+            <button type="button" class="btn btn-outline-dark px-4" onclick="history.back()">رجوع</button>
+        </div>
+
+        <div class="col-12">
+            <div id="formAlert" class="alert-msg"></div>
+        </div>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('missingForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const alertBox = document.getElementById('formAlert');
+    const requiredFields = form.querySelectorAll('.required');
+
+    function validateForm() {
+      let valid = true;
+      requiredFields.forEach(field => {
+        const id = field.getAttribute('id');
+        if (id === 'firstName' || id === 'secondName' || id === 'familyName') {
+          if (field.value.trim().length < 2) {
+            field.classList.add('field-error');
+            document.getElementById(`error-${id}`).style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById(`error-${id}`).style.display = 'none';
+          }
+        } else if (id === 'nationalId') {
+          if (!/^\d{14}$/.test(field.value.trim())) {
+            field.classList.add('field-error');
+            document.getElementById('error-nationalId').style.display = 'block';
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+            document.getElementById('error-nationalId').style.display = 'none';
+          }
+        }
+        else if (id === 'nationality') {
+  if (field.value.trim().length < 2) {
+    field.classList.add('field-error');
+    document.getElementById('error-nationality').style.display = 'block';
+    valid = false;
+  } else {
+    field.classList.remove('field-error');
+    document.getElementById('error-nationality').style.display = 'none';
+  }
+}
+else {
+          if (!field.value.trim()) {
+            field.classList.add('field-error');
+            valid = false;
+          } else {
+            field.classList.remove('field-error');
+          }
+        }
+
+      });
+      submitBtn.disabled = !valid;
+    }
+
+    requiredFields.forEach(field => {
+      field.addEventListener('input', validateForm);
+    });
+
+    form.addEventListener('submit', function (e) {
+      validateForm();
+      if (submitBtn.disabled) {
+        e.preventDefault();
+        alertBox.textContent = "يرجى استكمال الحقول المطلوبة";
+        alertBox.style.display = 'block';
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      form.reset();
+      alertBox.style.display = 'none';
+      requiredFields.forEach(f => f.classList.remove('field-error'));
+      requiredFields[0].focus();
+      submitBtn.disabled = true;
+    });
+
+    window.addEventListener('load', validateForm);
+</script>
+</body>
+</html>
