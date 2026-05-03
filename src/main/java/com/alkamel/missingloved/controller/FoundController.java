@@ -495,7 +495,13 @@ public class FoundController {
 
     private String runFaceRecognitionScript(String imagePath) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", "C:\\kamel\\face_data\\scripts\\match_faces.py", imagePath);
+            ProcessBuilder pb = new ProcessBuilder(
+                    "C:\\Users\\kamel\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+                    "C:\\kamel\\alkwebsite\\missingloved\\uploads\\match_faces.py",
+                    imagePath
+            );
+
+            pb.directory(new File("C:\\kamel\\alkwebsite\\missingloved\\uploads"));
             pb.redirectErrorStream(true);
             Process process = pb.start();
 

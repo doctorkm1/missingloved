@@ -1,0 +1,408 @@
+Folder PATH listing for volume Local Disk
+Volume serial number is F8BF-4A24
+C:.
+|   .gitattributes
+|   .gitignore
+|   HELP.md
+|   missing_image_map.csv
+|   mvn
+|   mvnw
+|   mvnw.cmd
+|   pom.xml
+|   structure.txt
+|   
++---${project.build.directory}
+|   \---classes
+|       +---static
+|       |   +---css
+|       |   \---images
+|       \---templates
++---.idea
+|       .gitignore
+|       compiler.xml
+|       encodings.xml
+|       jarRepositories.xml
+|       misc.xml
+|       vcs.xml
+|       workspace.xml
+|       
++---.mvn
+|   \---wrapper
+|           maven-wrapper.properties
+|           
++---.tmp.drivedownload
++---.tmp.driveupload
++---src
+|   +---main
+|   |   +---java
+|   |   |   \---com
+|   |   |       \---alkamel
+|   |   |           \---missingloved
+|   |   |               |   MissinglovedApplication.java
+|   |   |               |   
+|   |   |               +---config
+|   |   |               |       SecurityConfig.java
+|   |   |               |       WebConfig.java
+|   |   |               |       
+|   |   |               +---controller
+|   |   |               |       AdminUtilityController.java
+|   |   |               |       AuthController.java
+|   |   |               |       CaseEntryController.java
+|   |   |               |       FaceMatchAdminController.java
+|   |   |               |       FoundController.java
+|   |   |               |       FoundViewController.java
+|   |   |               |       HomeController.java
+|   |   |               |       LocationController.java
+|   |   |               |       LoginController.java
+|   |   |               |       MissingController.java
+|   |   |               |       PersonController.java
+|   |   |               |       ReportMlcmispController.java
+|   |   |               |       ReportMlcusrpController.java
+|   |   |               |       RssController.java
+|   |   |               |       SightmisController.java
+|   |   |               |       SightUsrController.java
+|   |   |               |       SignupListController.java
+|   |   |               |       UserController.java
+|   |   |               |       
+|   |   |               +---dto
+|   |   |               |       MissingDTO.java
+|   |   |               |       
+|   |   |               +---model
+|   |   |               |       AccessLevelMatrix.java
+|   |   |               |       FaceMatchRecord.java
+|   |   |               |       Found.java
+|   |   |               |       LocationCodes.java
+|   |   |               |       Missing.java
+|   |   |               |       Person.java
+|   |   |               |       Recorder.java
+|   |   |               |       RecorderCategory.java
+|   |   |               |       RecorderCategory.java~
+|   |   |               |       ReportMlcUsr.java
+|   |   |               |       Role.java
+|   |   |               |       Sightmis.java
+|   |   |               |       SightUsr.java
+|   |   |               |       User.java
+|   |   |               |       UserLog.java
+|   |   |               |       UserRole.java
+|   |   |               |       View.java
+|   |   |               |       
+|   |   |               +---repository
+|   |   |               |       AccessLevelMatrixRepository.java
+|   |   |               |       FaceMatchRecordRepository.java
+|   |   |               |       FoundRepository.java
+|   |   |               |       LocationCodesRepository.java
+|   |   |               |       MissingRepository.java
+|   |   |               |       PersonRepository.java
+|   |   |               |       RecorderCategoryRepository.java
+|   |   |               |       RecorderRepository.java
+|   |   |               |       ReportMlcmispRepository.java
+|   |   |               |       ReportMlcusrpRepository.java
+|   |   |               |       RoleRepository.java
+|   |   |               |       SightmisRepository.java
+|   |   |               |       SightUsrRepository.java
+|   |   |               |       UserLogRepository.java
+|   |   |               |       UserRepository.java
+|   |   |               |       UserRoleRepository.java
+|   |   |               |       ViewRepository.java
+|   |   |               |       
+|   |   |               +---security
+|   |   |               |       CustomUserDetailsService.java
+|   |   |               |       
+|   |   |               \---service
+|   |   |                       MissingService.java
+|   |   |                       PersonService.java
+|   |   |                       UserService.java
+|   |   |                       UserServiceImpl.java
+|   |   |                       
+|   |   \---resources
+|   |       |   application-demo.properties
+|   |       |   application-dev.properties
+|   |       |   application-prod.properties
+|   |       |   application.properties
+|   |       |   
+|   |       +---static
+|   |       |   +---css
+|   |       |   |       style.css
+|   |       |   |       
+|   |       |   \---images
+|   |       |           alkamel selim logo.jpg
+|   |       |           hero-bg.png
+|   |       |           kk15.jpg
+|   |       |           placeholder.png
+|   |       |           reunited.png
+|   |       |           Í´ü•° ©ü•°.png
+|   |       |           
+|   |       \---templates
+|   |           |   case-entry.html
+|   |           |   case-list.html
+|   |           |   found-entry.html
+|   |           |   found-list.html
+|   |           |   found-view.html
+|   |           |   home.html
+|   |           |   login.html
+|   |           |   match-list.html
+|   |           |   missing-detail-view.html
+|   |           |   missing-view.html
+|   |           |   missing.html
+|   |           |   reportfndusrp.html
+|   |           |   reportmissing.html
+|   |           |   reportmlcmisp.html
+|   |           |   reportmlcusrp.html
+|   |           |   Safe-Space-info.html
+|   |           |   sightmis-list.html
+|   |           |   sightmis.html
+|   |           |   sightusr.html
+|   |           |   signup-list.html
+|   |           |   signup.html
+|   |           |   
+|   |           \---fragments
+|   |                   case-row.html
+|   |                   found-row.html
+|   |                   
+|   \---test
+|       \---java
+|           \---com
+|               \---alkamel
+|                   \---missingloved
+|                           MissinglovedApplicationTests.java
+|                           
++---target
+|   |   missingloved-0.0.1-SNAPSHOT.jar
+|   |   missingloved-0.0.1-SNAPSHOT.jar.original
+|   |   
+|   +---classes
+|   |   |   application-demo.properties
+|   |   |   application-dev.properties
+|   |   |   application-prod.properties
+|   |   |   application.properties
+|   |   |   
+|   |   +---com
+|   |   |   \---alkamel
+|   |   |       \---missingloved
+|   |   |           |   MissinglovedApplication.class
+|   |   |           |   
+|   |   |           +---config
+|   |   |           |       SecurityConfig.class
+|   |   |           |       WebConfig.class
+|   |   |           |       
+|   |   |           +---controller
+|   |   |           |       AdminUtilityController.class
+|   |   |           |       AuthController.class
+|   |   |           |       CaseEntryController.class
+|   |   |           |       FaceMatchAdminController.class
+|   |   |           |       FoundController.class
+|   |   |           |       FoundViewController.class
+|   |   |           |       HomeController.class
+|   |   |           |       LocationController.class
+|   |   |           |       LoginController.class
+|   |   |           |       MissingController.class
+|   |   |           |       PersonController.class
+|   |   |           |       ReportMlcmispController.class
+|   |   |           |       ReportMlcusrpController.class
+|   |   |           |       RssController.class
+|   |   |           |       SightmisController.class
+|   |   |           |       SightUsrController.class
+|   |   |           |       SignupListController.class
+|   |   |           |       UserController.class
+|   |   |           |       
+|   |   |           +---dto
+|   |   |           |       MissingDTO.class
+|   |   |           |       
+|   |   |           +---model
+|   |   |           |       AccessLevelMatrix.class
+|   |   |           |       FaceMatchRecord.class
+|   |   |           |       Found.class
+|   |   |           |       LocationCodes.class
+|   |   |           |       Missing.class
+|   |   |           |       Person.class
+|   |   |           |       Recorder.class
+|   |   |           |       RecorderCategory.class
+|   |   |           |       ReportMlcUsr.class
+|   |   |           |       Role.class
+|   |   |           |       Sightmis.class
+|   |   |           |       SightUsr$SightUsrBuilder.class
+|   |   |           |       SightUsr.class
+|   |   |           |       User.class
+|   |   |           |       UserLog.class
+|   |   |           |       UserRole.class
+|   |   |           |       View.class
+|   |   |           |       
+|   |   |           +---repository
+|   |   |           |       AccessLevelMatrixRepository.class
+|   |   |           |       FaceMatchRecordRepository.class
+|   |   |           |       FoundRepository.class
+|   |   |           |       LocationCodesRepository.class
+|   |   |           |       MissingRepository.class
+|   |   |           |       PersonRepository.class
+|   |   |           |       RecorderCategoryRepository.class
+|   |   |           |       RecorderRepository.class
+|   |   |           |       ReportMlcmispRepository.class
+|   |   |           |       ReportMlcusrpRepository.class
+|   |   |           |       RoleRepository.class
+|   |   |           |       SightmisRepository.class
+|   |   |           |       SightUsrRepository.class
+|   |   |           |       UserLogRepository.class
+|   |   |           |       UserRepository.class
+|   |   |           |       UserRoleRepository.class
+|   |   |           |       ViewRepository.class
+|   |   |           |       
+|   |   |           +---security
+|   |   |           |       CustomUserDetailsService.class
+|   |   |           |       
+|   |   |           \---service
+|   |   |                   MissingService.class
+|   |   |                   PersonService.class
+|   |   |                   UserService.class
+|   |   |                   UserServiceImpl.class
+|   |   |                   
+|   |   +---static
+|   |   |   +---css
+|   |   |   |       style.css
+|   |   |   |       
+|   |   |   \---images
+|   |   |           alkamel selim logo.jpg
+|   |   |           hero-bg.png
+|   |   |           kk15.jpg
+|   |   |           placeholder.png
+|   |   |           reunited.png
+|   |   |           Í´ü•° ©ü•°.png
+|   |   |           
+|   |   \---templates
+|   |       |   case-entry.html
+|   |       |   case-list.html
+|   |       |   found-entry.html
+|   |       |   found-list.html
+|   |       |   found-view.html
+|   |       |   home.html
+|   |       |   login.html
+|   |       |   match-list.html
+|   |       |   missing-detail-view.html
+|   |       |   missing-view.html
+|   |       |   missing.html
+|   |       |   reportfndusrp.html
+|   |       |   reportmissing.html
+|   |       |   reportmlcmisp.html
+|   |       |   reportmlcusrp.html
+|   |       |   Safe-Space-info.html
+|   |       |   sightmis-list.html
+|   |       |   sightmis.html
+|   |       |   sightusr.html
+|   |       |   signup-list.html
+|   |       |   signup.html
+|   |       |   
+|   |       \---fragments
+|   |               case-row.html
+|   |               found-row.html
+|   |               
+|   +---generated-sources
+|   |   \---annotations
+|   +---generated-test-sources
+|   |   \---test-annotations
+|   +---maven-archiver
+|   |       pom.properties
+|   |       
+|   +---maven-status
+|   |   \---maven-compiler-plugin
+|   |       +---compile
+|   |       |   \---default-compile
+|   |       |           createdFiles.lst
+|   |       |           inputFiles.lst
+|   |       |           
+|   |       \---testCompile
+|   |           \---default-testCompile
+|   |                   createdFiles.lst
+|   |                   inputFiles.lst
+|   |                   
+|   +---surefire-reports
+|   |       com.alkamel.missingloved.MissinglovedApplicationTests.txt
+|   |       TEST-com.alkamel.missingloved.MissinglovedApplicationTests.xml
+|   |       
+|   \---test-classes
+|       \---com
+|           \---alkamel
+|               \---missingloved
+|                       MissinglovedApplicationTests.class
+|                       
+\---uploads
+    |   match_faces save.py
+    |   match_faces.py
+    |   
+    +---found
+    |   +---documents
+    |   |       6f4821c1-103c-4cdf-9027-0c44d67e419d-f36d08cc-7e0a-456b-8ecc-24cf12cd0906-ù¶¢≠ü≠ü¢ öÍÔÎ üÈ§Í„Ô° üÈ•ü´†ü¢.pdf
+    |   |       7adf99b2-c615-49ed-960c-b78c28751d5d-f50da3cf-7439-405a-aec6-360305b3f104-pagez1.pdf
+    |   |       7e357e74-4d9d-4111-abd9-b9d69798cb63-f36d08cc-7e0a-456b-8ecc-24cf12cd0906-ù¶¢≠ü≠ü¢ öÍÔÎ üÈ§Í„Ô° üÈ•ü´†ü¢.pdf
+    |   |       8457bcef-3a49-45cf-b547-59e8daf52cbf-f50da3cf-7439-405a-aec6-360305b3f104-pagez1.pdf
+    |   |       955e0210-0287-4348-ac6a-fdc9afc1ce00-f50da3cf-7439-405a-aec6-360305b3f104-pagez1.pdf
+    |   |       
+    |   \---images
+    |           46247a94-e26b-477a-b234-a79f83ffcf67-found-3221_1photo.jpg
+    |           4cc35efd-0507-422b-929c-45c94037bd22-found-67001_Page_1.jpg
+    |           a3e1ee4a-a9c2-4a5f-826d-df2567dd4590-found-3221_1photo.jpg
+    |           ce0e2516-a11f-4be8-b2dd-122b695241e4-mis-cht60y.png
+    |           ebe3b29f-ce75-47d9-a3ff-b677defe12d4-match-found-g1photo.jpg
+    |           
+    +---general documents
+    |       f36d08cc-7e0a-456b-8ecc-24cf12cd0906-ù¶¢≠ü≠ü¢ öÍÔÎ üÈ§Í„Ô° üÈ•ü´†ü¢.pdf
+    |       f50da3cf-7439-405a-aec6-360305b3f104-pagez1.pdf
+    |       
+    +---general images
+    |   |   found--Cht22yW1y.png
+    |   |   found-003024_1photo.png
+    |   |   found-003187_1photo.jpg
+    |   |   found-3221_1photo.jpg
+    |   |   found-cht17yW3yor5y.png
+    |   |   found-cht60ybalady.png
+    |   |   found-chtg5y2005.png
+    |   |   match-found-g1photo.jpg
+    |   |   match-mis-g1aphoto.jpg
+    |   |   mis-7557-fsmpl2.jpg
+    |   |   mis-9681-1photo.jpg
+    |   |   mis-cht60y.png
+    |   |   mis-ChtAge6y2004.png
+    |   |   mis-chtg5y2005.png
+    |   |   mis-misCht1y2001.png
+    |   |   mis-mischtgrl3y2010.png
+    |   |   mis_1photo.jpg
+    |   |   P6y2005.png
+    |   |   
+    |   +---for found entry
+    |   |       fnd-P6y2005.png
+    |   |       found--Cht22yW1y.png
+    |   |       found-003024_1photo.png
+    |   |       found-003187_1photo.jpg
+    |   |       found-3221_1photo.jpg
+    |   |       found-33.jpg
+    |   |       found-67001_Page_1.jpg
+    |   |       found-ch29yw26ya16y.png
+    |   |       found-cht17yW3yor5y.png
+    |   |       found-cht60ybalady.png
+    |   |       found-chtg5y2005.png
+    |   |       found-eyad806.JPG
+    |   |       found-kamel806.JPG
+    |   |       foundAge16W16y.png
+    |   |       match-found-g1photo.jpg
+    |   |       
+    |   \---for missing entry
+    |           match-mis-g1aphoto.jpg
+    |           mis-7557-fsmpl2.jpg
+    |           mis-9681-1photo.jpg
+    |           mis-cht60y.png
+    |           mis-ChtAge6y2004.png
+    |           mis-chtg5y2005.png
+    |           mis-misCht1y2001.png
+    |           mis-mischtgrl3y2010.png
+    |           mis-oldeyadandme01.jpg
+    |           mis_1photo.jpg
+    |           
+    \---missing
+        +---documents
+        |       51917251-6356-4bf5-95be-eb825c227a13-f36d08cc-7e0a-456b-8ecc-24cf12cd0906-ù¶¢≠ü≠ü¢ öÍÔÎ üÈ§Í„Ô° üÈ•ü´†ü¢.pdf
+        |       b9fd33dc-7c6d-4e3e-8162-c6272681fcfa-f50da3cf-7439-405a-aec6-360305b3f104-pagez1.pdf
+        |       db6d5fd8-331c-4607-a0c6-5ed05060b272-f50da3cf-7439-405a-aec6-360305b3f104-pagez1.pdf
+        |       
+        \---images
+                4ffad064-25e9-4d76-bfdd-02f2ff608484-mis-oldeyadandme01.jpg
+                b17e7187-3a63-40a4-aedb-07a58d17adc5-mis-cht60y.png
+                bd391c14-e372-4e95-8d70-167354cf9161-mis-9681-1photo.jpg
+                

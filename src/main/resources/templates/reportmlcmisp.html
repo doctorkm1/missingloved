@@ -228,6 +228,9 @@
             <div class="col-md-4">
                 <label class="form-label">صورة الغائب (اختياري)</label>
                 <input type="file" name="photo" id="photo" class="form-control">
+                <div id="photoLoader" style="display:none; color:blue; font-weight:bold;">
+                    جاري فحص الصورة...
+                </div>
             </div>
             <div class="col-md-4">
                 <label class="form-label">تاريخ صورة الغائب (إختيارى)</label>
@@ -257,7 +260,7 @@
     const clearBtn = document.getElementById('clearBtn');
     const alertBox = document.getElementById('formAlert');
     const requiredFields = form.querySelectorAll('.required');
-
+   let photoValid = true;
     function validateForm() {
         let valid = true;
         requiredFields.forEach(field => {
@@ -289,7 +292,7 @@
                 }
             }
         });
-        submitBtn.disabled = !valid;
+        submitBtn.disabled = !(valid && photoValid);
     }
 
     requiredFields.forEach(field => {
@@ -330,6 +333,11 @@
             document.getElementById("createdBy").value = passedUserCode;
         }
     });
+    function showPhotoLoading(show) {
+    const loader = document.getElementById("photoLoader");
+    if (!loader) return;
+    loader.style.display = show ? "block" : "none";
+}
 </script>
 <script>
     async function loadGovernments(selectId) {
@@ -432,6 +440,94 @@
         }
     });
 </script>
+<script>
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
 
+        const photoInput = document.getElementById("photo");
+        const photoDateInput = document.getElementById("photoDate");
+
+        if (!photoInput || !photoDateInput) return;
+
+        photoInput.addEventListener("change", function () {
+
+            // =============================
+            // No file → reset everything
+            // =============================
+            if (photoInput.files.length === 0) {
+                photoValid = true;
+
+                photoDateInput.value = "";
+                photoDateInput.disabled = true;
+
+                validateForm();
+                return;
+            }
+
+            // =============================
+            // SHOW LOADING
+            // =============================
+            showPhotoLoading(true);
+
+            const file = photoInput.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch("/api/validate-face", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                const count = data.face_count;
+
+                if (count === 0) {
+                    alert("لم يتم التعرف على وجه في الصورة");
+
+                    photoInput.value = "";
+                    photoDateInput.value = "";
+                    photoDateInput.disabled = true;
+
+                    photoValid = false;
+                }
+                else if (count === 1) {
+                    photoValid = true;
+
+                    // enable date ONLY if valid
+                    photoDateInput.disabled = false;
+                }
+                else {
+                    alert("الصورة تحتوي على أكثر من شخص، يرجى رفع صورة لشخص واحد فقط");
+
+                    photoInput.value = "";
+                    photoDateInput.value = "";
+                    photoDateInput.disabled = true;
+
+                    photoValid = false;
+                }
+
+                validateForm();
+                showPhotoLoading(false);
+
+            })
+            .catch(() => {
+                alert("حدث خطأ أثناء فحص الصورة");
+
+                photoInput.value = "";
+                photoDateInput.value = "";
+                photoDateInput.disabled = true;
+
+                photoValid = false;
+
+                validateForm();
+                showPhotoLoading(false);
+            });
+
+        });
+
+    });
+</script>
 </body>
 </html>
